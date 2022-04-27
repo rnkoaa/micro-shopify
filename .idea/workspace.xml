@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67702736-7830-48e6-bfb4-8f56d435de88" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1__initial.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,12 +60,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/Users/rnkoaa/workspace/experiments/superstore/frank-oak-scraper/data"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/rnkoaa/workspace/experiments/superstore/frank-oak-scraper/data&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.richard.frankoak" />
@@ -79,7 +80,7 @@
       <recent name="$PROJECT_DIR$/category-pages/base" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.org.richard.MainApp">
+  <component name="RunManager" selected="Application.MainApp">
     <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.richard.MainApp" />
       <module name="frank-oak-scraper.main" />
@@ -167,7 +168,6 @@
         <item itemvalue="Gradle.JsonDeserializationTest" />
         <item itemvalue="Gradle.JsonDeserializationTest.canDeserializeResponse" />
         <item itemvalue="Gradle.JsonDeserialization.canDeserializeResponse" />
-        <item itemvalue="Application.org.richard.MainApp" />
       </list>
     </recent_temporary>
   </component>
