@@ -1,70 +1,70 @@
-create TABLE product (
-    id bigint primary key,
-    title text not null,
-    available tinyint
-    html_description text,
-    vendor text,
-    product_type text,
-    handle text not null unique,
-    updated_at text not null,
-    created_at text not null,
-    published_at text,
-    tags json,
-    options json,
+CREATE TABLE IF NOT EXISTS product (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    available INTEGER
+    html_description TEXT,
+    vendor TEXT,
+    product_type TEXT,
+    handle TEXT NOT NULL UNIQUE,
+    updated_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    published_at TEXT,
+    tags JSON,
+    options JSON
 );
 
-create TABLE variant (
-    id bigint primary key,
-    product_id bigint not null,
-    title text not null,
-    price text,
-    sku text,
-    position int,
-    compare_at_price text,
-    fulfillment_service text,
-    inventory_management text,
-    options json,
-    handle text not null unique,
-    updated_at text not null,
-    created_at text not null,
-    published_at text,
-    taxable tinyint,
-    barcode json,
-    grams int,
-    image_id int,
-    weight text,
-    weight_unit text,
-    tax_code text,
-    requires_shipping tinyint
+CREATE TABLE IF NOT EXISTS variant (
+    id INTEGER PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    price TEXT,
+    sku TEXT,
+    position INTEGER,
+    compare_at_price TEXT,
+    fulfillment_service TEXT,
+    inventory_management TEXT,
+    options JSON,
+    handle TEXT NOT NULL UNIQUE,
+    updated_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    published_at TEXT,
+    taxable INTEGER,
+    barcode JSON,
+    grams INTEGER,
+    image_id INTEGER,
+    weight TEXT,
+    weight_unit TEXT,
+    tax_code TEXT,
+    requires_shipping INTEGER
 );
 
 -- inventory
 
-create TABLE image (
-    id bigint primary key,
-    product_id bigint not null,
-    position int,
-    updated_at text not null,
-    created_at text not null,
-    alt text,
-    width int,
-    height int,
-    src text,
-    variant_ids text
+CREATE TABLE IF NOT EXISTS image (
+    id INTEGER PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    position INTEGER,
+    updated_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    alt TEXT,
+    width INTEGER,
+    height INTEGER,
+    src TEXT,
+    variant_ids TEXT
 );
 
-create TABLE collection (
-    id bigint primary key,
-   title text not null,
-   parent_id bigint,
-    position int,
-    updated_at text not null,
-    created_at text not null,
-    hero json
+CREATE TABLE IF NOT EXISTS collection (
+    id INTEGER PRIMARY KEY,
+   title TEXT NOT NULL,
+   parent_id INTEGER,
+    position INTEGER,
+    updated_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    hero JSON
 );
 
-create TABLE collection_product (
-    collection_id bigint ,
-    product_id bigint ,
+CREATE TABLE IF NOT EXISTS collection_product (
+    collection_id INTEGER,
+    product_id INTEGER
 );
 
