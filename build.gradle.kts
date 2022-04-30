@@ -1,4 +1,5 @@
 import nu.studer.gradle.jooq.JooqGenerate
+import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.type
 
 plugins {
     id("nu.studer.jooq") version "7.1.1"
@@ -98,6 +99,7 @@ jooq {
 
 
 tasks.getByName<Test>("test") {
+    dependsOn("flywayMigrateTest")
     useJUnitPlatform()
 }
 
@@ -115,3 +117,17 @@ tasks.named<JooqGenerate>("generateJooq") {
         languageVersion.set(JavaLanguageVersion.of(18))
     })
 }
+
+tasks.register<org.flywaydb.gradle.task.FlywayMigrateTask>("flywayMigrateTest") {
+    description = "generate a new Db for testing"
+    driver = "org.sqlite.JDBC"
+    mixed = true // suppress 'Detected transactional and non-transactional statements within the same migration
+    url = "jdbc:sqlite:${projectDir}/src/test/resources/db/micro-shopify.db"
+    locations = arrayOf("filesystem:${projectDir}/src/main/resources/db/migration")
+}
+
+//task migrateDatabase2(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
+//    url = 'jdbc:h2:mem:mydb2'
+//    user = 'myUsr2'
+//    password = 'mySecretPwd2'
+//}

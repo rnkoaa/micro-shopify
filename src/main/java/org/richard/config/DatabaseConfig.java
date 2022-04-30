@@ -17,19 +17,9 @@ import org.sqlite.SQLiteOpenMode;
 
 public class DatabaseConfig {
 
-    public DSLContext dslContext() {
-        return DSL.using(new DefaultConfiguration()
-            .set(dataSource())
-            .set(SQLDialect.SQLITE)
-            .set(new Settings().withExecuteLogging(false))
-            .set(new RecordMapperProviderImpl(ObjectMapperFactory.buildObjectMapper()))
-        );
-
-    }
-
-    public DataSource dataSource() {
+    public DataSource dataSource(String url) {
         HikariDataSource ds = new HikariDataSource();
-        ds.setJdbcUrl("jdbc:sqlite:src/main/resources/db/micro-shopify.db");
+        ds.setJdbcUrl(url);
         return ds;
     }
 
@@ -57,5 +47,14 @@ public class DatabaseConfig {
 //            config.setJournalMode( JournalMode.WAL );
 //        }
         return config;
+    }
+
+    public DSLContext dslContext(String url) {
+        return DSL.using(new DefaultConfiguration()
+            .set(dataSource(url))
+            .set(SQLDialect.SQLITE)
+            .set(new Settings().withExecuteLogging(false))
+            .set(new RecordMapperProviderImpl(ObjectMapperFactory.buildObjectMapper()))
+        );
     }
 }

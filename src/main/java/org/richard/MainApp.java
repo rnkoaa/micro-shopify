@@ -32,6 +32,8 @@ import org.richard.frankoak.product.ProductItemResponse;
 
 public class MainApp {
 
+    static String jdbcUrl = "jdbc:sqlite:src/main/resources/db/micro-shopify.db";
+
     static ObjectMapper objectMapper = buildObjectMapper();
 
     static void flatten(List<Category> seed, Category parent, Set<Category> categories) {

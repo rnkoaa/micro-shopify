@@ -28,7 +28,7 @@ public record Category(
     }
 
     @JsonPOJOBuilder(withPrefix = "")
-    static class Builder {
+    public static class Builder {
 
         private int id;
         private String name;
@@ -38,8 +38,6 @@ public record Category(
         private Map<String, String> hero;
         private List<SortOption> sortOptions;
 
-        @JsonProperty("sortOptions")
-        private List<SortOption> originalSortOptions;
         private List<String> defaultFilterGroups;
         private Category parent;
         private Set<Category> children;
@@ -49,6 +47,7 @@ public record Category(
         public Builder(Category category) {
             this.id = category.id;
             this.name = category.name;
+            this.url = category.url;
             this.description = category.description;
             this.position = category.position;
             this.hero = category.hero;

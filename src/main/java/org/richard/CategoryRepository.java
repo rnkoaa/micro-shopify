@@ -4,6 +4,7 @@ import static org.microshopify.jooq.tables.Category.CATEGORY;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
+import java.util.Optional;
 import org.jooq.DSLContext;
 import org.richard.frankoak.infra.jooq.CategoryRecordUnMapper;
 
@@ -27,10 +28,14 @@ public class CategoryRepository {
             // insert all its children with category as
 
             if (result != null) {
-                return category.withId(result);
+                return new Category.Builder(category).id(result).build();
             }
             return category;
         });
+    }
+
+    List<Category> save(List<Category> categories) {
+        return categories.stream().map(this::save).toList();
     }
 
     int count() {
@@ -49,5 +54,22 @@ public class CategoryRepository {
             .where(CATEGORY.ID.eq(category))
             .execute();
         return deletedCount == 1;
+    }
+
+    public Optional<Category> findById(int categoryId) {
+        Category category = dsl.selectFrom(CATEGORY)
+            .where(CATEGORY.ID.eq(categoryId))
+            .fetchOneInto(Category.class);
+
+        return Optional.ofNullable(category);
+    }
+
+    public boolean deleteAll(boolean testing) {
+        if (testing) {
+            dsl.delete(CATEGORY)
+                .execute();
+            return true;
+        }
+        return false;
     }
 }

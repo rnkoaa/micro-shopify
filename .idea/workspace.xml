@@ -5,29 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d1f2a36-5bb5-4945-8fe6-67e2d91b5fc1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/CollectionCategoryMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/config/DatabaseConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/SortOption.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordUnMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/RecordMapperProviderImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/data/men_category_shop_all.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/db/.gitkeep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/categories/men-shop-all.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/categories/men-shop-all.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/Collection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/Collection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/CollectionHero.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/CollectionHero.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V1__initial.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1__initial.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/config/DatabaseConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/config/DatabaseConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/micro-shopify.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/micro-shopify.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +48,19 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="micro-shopify" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="flyway" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="micro-shopify" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="jooq" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="micro-shopify" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -111,7 +110,7 @@
       <recent name="org.richard" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.CategoryRepositoryTest">
+  <component name="RunManager" selected="Gradle.micro-shopify [flywayMigrateTest]">
     <configuration name="CategoryRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -131,6 +130,27 @@
         <option name="vmOptions" />
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="micro-shopify [flywayMigrateTest]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="flywayMigrateTest" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
@@ -169,6 +189,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.micro-shopify [flywayMigrateTest]" />
         <item itemvalue="Gradle.CategoryRepositoryTest" />
         <item itemvalue="Gradle.micro-shopify [generateJooq]" />
       </list>
@@ -195,5 +216,31 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
