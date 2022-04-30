@@ -1,0 +1,85 @@
+{
+  "handle": "/collections/men-shop-all",
+  "handleFR": "/fr/collections/men-shop-all",
+  "title": "men+%2F+featured+%2F+Shop+All",
+  "description": "",
+  "image": "",
+  "fetched": true,
+  "defaultFilterGroupPrefix": [
+    "custitem_fao_merch_category",
+    "custitem_fao_body:"
+  ],
+  "sortOptions": [
+    {
+      "id": "manual",
+      "label": "Featured"
+    },
+    {
+      "id": "best-selling",
+      "label": "Best selling"
+    },
+    {
+      "id": "title-ascending",
+      "label": "Alphabetically, A-Z"
+    },
+    {
+      "id": "title-descending",
+      "label": "Alphabetically, Z-A"
+    },
+    {
+      "id": "price-ascending",
+      "label": "Price, low to high"
+    },
+    {
+      "id": "price-descending",
+      "label": "Price, high to low"
+    },
+    {
+      "id": "created-ascending",
+      "label": "Date, old to new"
+    },
+    {
+      "id": "created-descending",
+      "label": "Date, new to old"
+    }
+  ],
+  "models": [],
+  "fits": [],
+  "fitImages": [],
+  "contentTiles": [],
+  "subcategories": [
+    {
+      "subcategoryTag": "product_type:Tops",
+      "subcategoryTitle": "Tops",
+      "subcategoryDescription": ""
+    },
+    {
+      "subcategoryTag": "product_type:Bottoms",
+      "subcategoryTitle": "Bottoms",
+      "subcategoryDescription": ""
+    },
+    {
+      "subcategoryTag": "product_type:Outerwear",
+      "subcategoryTitle": "Outerwear",
+      "subcategoryDescription": ""
+    },
+    {
+      "subcategoryTag": "product_type:Underwear",
+      "subcategoryTitle": "Underwear",
+      "subcategoryDescription": ""
+    },
+    {
+      "subcategoryTag": "product_type:Accessories",
+      "subcategoryTitle": "Accessories",
+      "subcategoryDescription": ""
+    }
+  ],
+  "hero": {
+    "show": "false",
+    "image": "",
+    "alt": "",
+    "color": "#ffffff",
+    "title": "men / featured / Shop All",
+    "detail": ""
+  }
+}

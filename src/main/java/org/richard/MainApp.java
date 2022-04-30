@@ -38,11 +38,20 @@ public class MainApp {
         categories.forEach(category -> {
             if (parent != null) {
                 seed.add(
-                    new Category(category.name(), category.url(), parent.name(), parent.url(), Set.of()));
+                    Category.builder()
+                        .name(category.name())
+                        .url(category.url())
+                        .parent(parent)
+                        .build()
+                );
             } else {
                 seed.add(
-                    new Category(category.name(), category.url(), category.parentName(), category.parentUrl(),
-                        Set.of()));
+                    Category.builder()
+                        .name(category.name())
+                        .url(category.url())
+                        .parent(category.parent())
+                        .build()
+                );
             }
             if (category.children().size() > 0) {
                 flatten(seed, category, category.children());

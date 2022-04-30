@@ -13,6 +13,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class CategoryMenuParser {
+
     static void printCategories(Set<Category> categories, int tabs) {
         String tabChars = IntStream.range(0, tabs)
             .mapToObj(it -> "\t")
@@ -42,7 +43,11 @@ public class CategoryMenuParser {
                         String text = first.text();
                         Set<Category> childrenCategories = new HashSet<>();
 
-                        var parentCategory = new Category(text, link, "", "", childrenCategories);
+                        var parentCategory = Category.builder()
+                            .description(text)
+                            .url(link)
+                            .children(childrenCategories)
+                            .build();
 
                         // find the next children
                         Element subHeaderNav = child.getElementsByClass("header-nav__subnav__items").first();
@@ -54,8 +59,10 @@ public class CategoryMenuParser {
                                     .first();
                                 Category childCategory = null;
                                 if (childTitleElement != null) {
-                                    childCategory = new Category(childTitleElement.text(), "",
-                                        parentCategory.parentName(), parentCategory.url(), Set.of());
+                                    childCategory = Category.builder()
+                                        .name(childTitleElement.text())
+                                        .parent(parentCategory)
+                                        .build();
                                     childrenCategories.add(childCategory);
                                 }
 
@@ -70,9 +77,11 @@ public class CategoryMenuParser {
                                         String subNavText = linkElement.text();
                                         String subNavHref = linkElement.attr("href");
 
-                                        Category grandChild = new Category(subNavText, subNavHref,
-                                            childCategory.parentName(),
-                                            childCategory.url(), Set.of());
+                                        Category grandChild = Category.builder()
+                                            .name(subNavText)
+                                            .url(subNavHref)
+                                            .parent(childCategory.parent())
+                                            .build();
                                         grandChildren.add(grandChild);
                                     }
                                     parentCategory = parentCategory.addCategory(childCategory);
