@@ -3,9 +3,11 @@ package org.richard;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.richard.frankoak.SortOption;
 
@@ -20,11 +22,40 @@ public record Category(
     List<SortOption> sortOptions,
     List<String> defaultFilterGroups,
     Category parent,
-    Set<Category> children
+    Set<Category> children,
+    Instant createdAt,
+    Instant updatedAt
 ) {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Category category = (Category) o;
+        return id == category.id && position == category.position && Objects.equals(name, category.name)
+            && Objects.equals(url, category.url) && Objects.equals(description, category.description)
+            && Objects.equals(parent, category.parent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, url, description, position, parent);
+    }
+
+    public Category withParent(Category parent) {
+        return new Builder(this).parent(parent).build();
+    }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public Category withUrl(String url) {
+        return new Builder(this).url(url).build();
     }
 
     @JsonPOJOBuilder(withPrefix = "")
@@ -41,6 +72,8 @@ public record Category(
         private List<String> defaultFilterGroups;
         private Category parent;
         private Set<Category> children;
+        private Instant createdAt;
+        private Instant updatedAt;
 
         public Builder() {}
 
@@ -55,6 +88,8 @@ public record Category(
             this.defaultFilterGroups = category.defaultFilterGroups;
             this.parent = category.parent;
             this.children = category.children;
+            this.createdAt = category.createdAt;
+            this.updatedAt = category.updatedAt;
         }
 
         public Builder id(int id) {
@@ -71,6 +106,7 @@ public record Category(
             this.name = name;
             return this;
         }
+
         public Builder title(String title) {
             this.name = title;
             return this;
@@ -112,22 +148,34 @@ public record Category(
         }
 
         public Category build() {
-            return new Category(id, name, url, description, position, hero, sortOptions, defaultFilterGroups, parent,
-                children);
+            return new Category(id, name, url,
+                description,
+                position,
+                hero,
+                sortOptions, defaultFilterGroups, parent,
+                children, createdAt, updatedAt);
+        }
+
+        public Builder updatedAt(Instant updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Builder createdAt(Instant createdAt) {
+            this.createdAt = createdAt;
+            return this;
         }
     }
 
     public String toSimpleString() {
-        if (url == null || url.isEmpty()) {
-            return "Category[name=" + name + "]";
+        String parentName = "";
+        if (parent != null) {
+            parentName = parent.name;
         }
-        return "Category[name=" + name + ", " + "url=" + url + "]";
-    }
-
-    public Category withChildren(Set<Category> grandChildren) {
-        return new Builder(this)
-            .children(grandChildren)
-            .build();
+        if (url == null || url.isEmpty()) {
+            return "Category[name=" + name + ", parent=" + parentName + "]";
+        }
+        return "Category[name=" + name + ", " + "url=" + url + ", parent=" + parentName + "]";
     }
 
     public Category withId(int id) {
@@ -136,9 +184,4 @@ public record Category(
             .build();
     }
 
-    public Category addCategory(Category childCategory) {
-        var copy = new HashSet<>(children);
-        copy.add(childCategory);
-        return withChildren(Set.copyOf(copy));
-    }
 }

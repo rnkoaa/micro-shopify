@@ -5,16 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d1f2a36-5bb5-4945-8fe6-67e2d91b5fc1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/resources/db/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/richard/BaseRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CollectionCategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CollectionCategoryMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/config/DatabaseConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/config/DatabaseConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db/micro-shopify.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/micro-shopify.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/db/micro-shopify.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/db/micro-shopify.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +112,30 @@
       <recent name="org.richard" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.micro-shopify [flywayMigrateTest]">
+  <component name="RunManager" selected="Gradle.CategoryRepositoryTest">
+    <configuration name="CategoryMenuParserTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.richard.CategoryMenuParserTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="CategoryRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -189,8 +214,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.micro-shopify [flywayMigrateTest]" />
         <item itemvalue="Gradle.CategoryRepositoryTest" />
+        <item itemvalue="Gradle.CategoryMenuParserTest" />
+        <item itemvalue="Gradle.micro-shopify [flywayMigrateTest]" />
         <item itemvalue="Gradle.micro-shopify [generateJooq]" />
       </list>
     </recent_temporary>
@@ -222,23 +248,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java</url>
-          <line>64</line>
+          <line>48</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordMapper.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/org/richard/CategoryRepositoryTest.java</url>
-          <line>68</line>
+          <line>52</line>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

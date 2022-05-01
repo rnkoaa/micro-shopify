@@ -36,31 +36,6 @@ public class MainApp {
 
     static ObjectMapper objectMapper = buildObjectMapper();
 
-    static void flatten(List<Category> seed, Category parent, Set<Category> categories) {
-        categories.forEach(category -> {
-            if (parent != null) {
-                seed.add(
-                    Category.builder()
-                        .name(category.name())
-                        .url(category.url())
-                        .parent(parent)
-                        .build()
-                );
-            } else {
-                seed.add(
-                    Category.builder()
-                        .name(category.name())
-                        .url(category.url())
-                        .parent(category.parent())
-                        .build()
-                );
-            }
-            if (category.children().size() > 0) {
-                flatten(seed, category, category.children());
-            }
-        });
-    }
-
     public static void main(String[] args) throws IOException, InterruptedException {
         Set<ProductItemResponse> productItemResponses = readProducts();
 

@@ -3,6 +3,7 @@ package org.richard.frankoak.infra.jooq;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +35,13 @@ public class CategoryRecordMapper implements RecordMapper<CategoryRecord, Catego
             .description(record.getDescription() != null ? record.getDescription() : "");
 
         String updatedAt = record.getUpdatedAt();
+        if (updatedAt != null && !updatedAt.isEmpty()) {
+            categoryBuilder.updatedAt(Instant.parse(updatedAt));
+        }
         String createdAt = record.getCreatedAt();
+        if (createdAt != null && !createdAt.isEmpty()) {
+            categoryBuilder.createdAt(Instant.parse(createdAt));
+        }
         JSON defaultFilterGroups = record.getDefaultFilterGroups();
         JSON hero = record.getHero();
 

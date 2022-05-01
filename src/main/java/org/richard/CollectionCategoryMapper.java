@@ -9,7 +9,7 @@ import org.richard.frankoak.category.CollectionSortOption;
 
 public class CollectionCategoryMapper {
 
-    public Category map(Collection collection) {
+    public Category convert(Collection collection) {
         return Category.builder()
             .name(collection.title())
             .description(collection.description())
@@ -22,14 +22,20 @@ public class CollectionCategoryMapper {
             .build();
     }
 
-    Map<String, String> map(CollectionHero hero) {
+    public List<Category> convert(List<Collection> collections) {
+        return collections.stream()
+            .map(this::convert)
+            .toList();
+    }
+
+    private Map<String, String> map(CollectionHero hero) {
         if (hero == null) {
             return Map.of();
         }
         return hero.decompose();
     }
 
-    List<SortOption> map(List<CollectionSortOption> sortOptionList) {
+    private List<SortOption> map(List<CollectionSortOption> sortOptionList) {
         if (sortOptionList == null) {
             return List.of();
         }

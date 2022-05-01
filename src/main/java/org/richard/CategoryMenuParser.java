@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.richard.Category.Builder;
 
 public class CategoryMenuParser {
 
@@ -22,7 +24,7 @@ public class CategoryMenuParser {
         int nextTabs = tabs + 1;
         for (Category category : categories) {
             System.out.println(tabChars + category.toSimpleString());
-            if (category.children().size() > 0) {
+            if (category.children() != null && category.children().size() > 0) {
                 printCategories(category.children(), nextTabs);
             }
         }
@@ -30,26 +32,17 @@ public class CategoryMenuParser {
 
     static Set<Category> parseMenu() throws IOException {
         Set<Category> categories = new HashSet<>();
-        String content = Files.readString(Paths.get("docs/header-nav.html"));
+        String content = Files.readString(Paths.get("data/header-nav.html"));
         Document document = Jsoup.parse(content);
         Elements elementsByClass = document.getElementsByClass("header-nav__items");
         if (elementsByClass.size() > 0) {
             Elements children = elementsByClass.get(0).children();
             if (children.size() > 0) {
                 for (Element child : children) {
-                    Element first = child.getElementsByClass("header-nav__item__link").first();
-                    if (first != null) {
-                        String link = first.attr("href");
-                        String text = first.text();
-                        Set<Category> childrenCategories = new HashSet<>();
-
-                        var parentCategory = Category.builder()
-                            .description(text)
-                            .url(link)
-                            .children(childrenCategories)
-                            .build();
-
-                        // find the next children
+                    Set<Category> childrenCategories = new HashSet<>();
+                    var parentCategory = buildDirectChild(child);
+                    if (parentCategory != null) {
+//                        // find the next children
                         Element subHeaderNav = child.getElementsByClass("header-nav__subnav__items").first();
                         if (subHeaderNav != null) {
                             Elements directSubNavItems = subHeaderNav.getElementsByClass("header-nav__subnav__item");
@@ -63,7 +56,6 @@ public class CategoryMenuParser {
                                         .name(childTitleElement.text())
                                         .parent(parentCategory)
                                         .build();
-                                    childrenCategories.add(childCategory);
                                 }
 
                                 Element directSubNavItemLinks = directSubNavItem.getElementsByClass(
@@ -71,8 +63,7 @@ public class CategoryMenuParser {
                                 if (directSubNavItemLinks != null) {
                                     Set<Category> grandChildren = new HashSet<>();
                                     assert childCategory != null;
-
-                                    childCategory = childCategory.withChildren(grandChildren);
+//
                                     for (Element linkElement : directSubNavItemLinks.getElementsByTag("a")) {
                                         String subNavText = linkElement.text();
                                         String subNavHref = linkElement.attr("href");
@@ -80,20 +71,63 @@ public class CategoryMenuParser {
                                         Category grandChild = Category.builder()
                                             .name(subNavText)
                                             .url(subNavHref)
-                                            .parent(childCategory.parent())
+                                            .parent(childCategory)
                                             .build();
                                         grandChildren.add(grandChild);
                                     }
-                                    parentCategory = parentCategory.addCategory(childCategory);
+                                    childCategory = new Builder(childCategory).children(grandChildren).build();
                                 }
+                                childrenCategories.add(childCategory);
                             }
+                            parentCategory = new Category.Builder(parentCategory)
+                                .children(childrenCategories).build();
+                            categories.add(parentCategory);
                         }
-                        categories.add(parentCategory);
                     }
+
                 }
             }
         }
         return categories;
+    }
+
+    static void flatten(List<Category> seed, Category parent, Set<Category> categories) {
+        categories.forEach(category -> {
+            if (parent != null) {
+                seed.add(
+                    Category.builder()
+                        .name(category.name())
+                        .url(category.url())
+                        .parent(parent)
+                        .build()
+                );
+            } else {
+                seed.add(
+                    Category.builder()
+                        .name(category.name())
+                        .url(category.url())
+                        .parent(category.parent())
+                        .build()
+                );
+            }
+            if (category.children().size() > 0) {
+                flatten(seed, category, category.children());
+            }
+        });
+    }
+
+    static Category buildDirectChild(Element child) {
+        Element first = child.getElementsByClass("header-nav__item__link").first();
+        if (first != null) {
+            String link = first.attr("href");
+            String text = first.text();
+
+            return Category.builder()
+                .name(text)
+                .url(link)
+                .build();
+        }
+        return null;
     }
 
 }
