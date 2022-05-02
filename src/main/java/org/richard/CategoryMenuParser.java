@@ -1,10 +1,14 @@
 package org.richard;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,6 +17,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.richard.Category.Builder;
+import org.richard.frankoak.category.Collection;
+import org.richard.frankoak.category.CollectionResponse;
 
 public class CategoryMenuParser {
 
@@ -89,6 +95,36 @@ public class CategoryMenuParser {
             }
         }
         return categories;
+    }
+
+    public static Set<CollectionResponse> readCategoryFiles(ObjectMapper objectMapper) {
+        String path = "category-pages/json";
+        File file = new File(path);
+        File[] files = file.listFiles();
+        if (files != null && files.length > 0) {
+            return Arrays.stream(files)
+                .map(File::getPath)
+                .filter(fPath -> fPath.endsWith(".json"))
+                .map(f -> {
+                    try {
+                        String fileContent = Files.readString(Paths.get(f));
+                        return objectMapper.readValue(fileContent, CollectionResponse.class);
+                    } catch (IOException e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        }
+
+        return Set.of();
+    }
+
+    public static Set<Collection> getAllCollections(ObjectMapper objectMapper) {
+        return readCategoryFiles(objectMapper)
+            .stream()
+            .map(CollectionResponse::collection)
+            .collect(Collectors.toSet());
     }
 
     static void flatten(List<Category> seed, Category parent, Set<Category> categories) {

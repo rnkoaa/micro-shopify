@@ -1,5 +1,4 @@
 import nu.studer.gradle.jooq.JooqGenerate
-import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.type
 
 plugins {
     id("nu.studer.jooq") version "7.1.1"
@@ -20,6 +19,7 @@ configurations {
 
 dependencies {
     implementation("org.jsoup:jsoup:1.14.3")
+    implementation("org.jooq:jool:0.9.14")
 
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

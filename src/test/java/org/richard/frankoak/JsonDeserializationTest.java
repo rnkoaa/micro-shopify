@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
-import org.richard.frankoak.category.Response;
+import org.richard.frankoak.category.CollectionResponse;
 import org.richard.frankoak.product.ProductDetailResponse;
 import org.richard.frankoak.product.ProductItemResponse;
 
@@ -30,7 +30,7 @@ public class JsonDeserializationTest {
         assertThat(content).isNotEmpty();
 
         ObjectMapper objectMapper = buildObjectMapper();
-        Response response = objectMapper.readValue(content, Response.class);
+        CollectionResponse response = objectMapper.readValue(content, CollectionResponse.class);
         assertThat(response).isNotNull();
         assertThat(response.collection()).isNotNull();
         assertThat(response.products()).isNotNull().hasSize(16);

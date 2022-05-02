@@ -1,5 +1,8 @@
 package org.richard;
 
+import static org.richard.Strings.isNotNullOrEmpty;
+import static org.richard.Strings.isNullOrEmpty;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -56,6 +59,34 @@ public record Category(
 
     public Category withUrl(String url) {
         return new Builder(this).url(url).build();
+    }
+
+    public Category mergeWith(Category category) {
+        var categoryBuilder = new Builder(this);
+        if (category != null) {
+            if (isNotNullOrEmpty(category.url)) {
+                categoryBuilder.url(category.url);
+            }
+            if (isNotNullOrEmpty(category.description)) {
+                categoryBuilder.description(category.description);
+            }
+
+            if (category.position > 0) {
+                categoryBuilder.position(category.position);
+            }
+            if (category.defaultFilterGroups != null) {
+                categoryBuilder.defaultFilterGroups(category.defaultFilterGroups);
+            }
+            if (category.sortOptions != null) {
+                categoryBuilder.sortOptions(category.sortOptions);
+            }
+            if (category.hero != null) {
+                categoryBuilder.hero(category.hero);
+            }
+            categoryBuilder.updatedAt(Instant.now());
+        }
+
+        return categoryBuilder.build();
     }
 
     @JsonPOJOBuilder(withPrefix = "")
@@ -172,7 +203,7 @@ public record Category(
         if (parent != null) {
             parentName = parent.name;
         }
-        if (url == null || url.isEmpty()) {
+        if (isNullOrEmpty(url)) {
             return "Category[name=" + name + ", parent=" + parentName + "]";
         }
         return "Category[name=" + name + ", " + "url=" + url + ", parent=" + parentName + "]";

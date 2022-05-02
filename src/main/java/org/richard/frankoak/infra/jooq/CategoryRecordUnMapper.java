@@ -35,13 +35,13 @@ public class CategoryRecordUnMapper implements RecordUnmapper<Category, Category
             record.setDescription(source.description());
         }
         if (source.sortOptions() != null) {
-            record.setSortOptions(JSON.valueOf(safeJson(source.sortOptions())));
+            record.setSortOptions(parseJSON(source.sortOptions()));
         }
         if (source.defaultFilterGroups() != null) {
-            record.setDefaultFilterGroups(JSON.valueOf(safeJson(source.defaultFilterGroups())));
+            record.setDefaultFilterGroups(parseJSON(source.defaultFilterGroups()));
         }
         if (source.hero() != null) {
-            record.setHero(JSON.valueOf(safeJson(source.hero())));
+            record.setHero(parseJSON(source.hero()));
         }
         return record;
     }
@@ -51,6 +51,10 @@ public class CategoryRecordUnMapper implements RecordUnmapper<Category, Category
             return 0;
         }
         return Integer.parseInt(value);
+    }
+
+    public JSON parseJSON(Object value) {
+        return JSON.valueOf(safeJson(value));
     }
 
     String safeJson(Object value) {

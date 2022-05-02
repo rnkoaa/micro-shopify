@@ -13,7 +13,6 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.richard.config.HttpClientFactory;
 import org.richard.frankoak.ProductDetailDownloader;
-import org.richard.frankoak.category.Response;
 import org.richard.frankoak.product.ImageItem;
 import org.richard.frankoak.product.ProductDetailResponse;
 import org.richard.frankoak.product.ProductItemResponse;
@@ -97,7 +95,7 @@ public class MainApp {
         ProductDetailDownloader productDetailDownloader = new ProductDetailDownloader(
             HttpClientFactory.buildHttpClient());
 
-        Set<String> allProducts = readCategoryFiles()
+        Set<String> allProducts = CategoryMenuParser.readCategoryFiles(objectMapper)
             .stream()
             .flatMap(r -> r.products().stream())
             .map(it -> String.format("%s.json", it.handle()))
@@ -106,31 +104,9 @@ public class MainApp {
         productDetailDownloader.downloadProductDetails(allProducts);
     }
 
-    public static Set<Response> readCategoryFiles() {
-        String path = "category-pages/json";
-        File file = new File(path);
-        File[] files = file.listFiles();
-        if (files != null && files.length > 0) {
-            return Arrays.stream(files)
-                .map(File::getPath)
-                .filter(fPath -> fPath.endsWith(".json"))
-                .map(f -> {
-                    try {
-                        String fileContent = Files.readString(Paths.get(f));
-                        return objectMapper.readValue(fileContent, Response.class);
-                    } catch (IOException e) {
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-        }
-
-        return Set.of();
-    }
-
     public static Set<ProductItemResponse> readProducts() {
         record FileInfo(String filepath, Path path, String fileName) {}
+
         String path = "product-pages/json";
         File file = new File(path);
         File[] files = file.listFiles();

@@ -1,14 +1,19 @@
 package org.richard;
 
 import static org.microshopify.jooq.tables.Category.CATEGORY;
+import static org.richard.Strings.isNotNullOrEmpty;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
+import org.jooq.UpdateSetFirstStep;
+import org.jooq.UpdateSetMoreStep;
 import org.jooq.exception.DataAccessException;
+import org.microshopify.jooq.tables.records.CategoryRecord;
 import org.richard.frankoak.infra.jooq.CategoryRecordUnMapper;
 
 public class CategoryRepository {
@@ -25,11 +30,24 @@ public class CategoryRepository {
         Optional<Category> maybeCategory = findByHandle(category.url());
         return maybeCategory
             .map(foundCategory -> {
-                var categoryBuilder = new Category.Builder(foundCategory);
-                int count = dsl.transactionResult(configuration ->
-                    dsl.update(CATEGORY)
-                        .set(categoryRecordUnMapper.unmap(categoryBuilder.build()))
-                        .execute()
+                int count = dsl.transactionResult(configuration -> {
+                        var newCategory = foundCategory.mergeWith(category);
+                        return dsl.update(CATEGORY)
+                            .set(CATEGORY.UPDATED_AT, Instant.now().toString())
+                            .set(CATEGORY.HANDLE, newCategory.url())
+                            .set(CATEGORY.DESCRIPTION, newCategory.description())
+                            .set(CATEGORY.POSITION, newCategory.position())
+                            .set(CATEGORY.DEFAULT_FILTER_GROUPS,
+                                categoryRecordUnMapper.parseJSON(newCategory.defaultFilterGroups()))
+                            .set(CATEGORY.SORT_OPTIONS,
+                                categoryRecordUnMapper.parseJSON(newCategory.sortOptions())
+                            )
+                            .set(CATEGORY.HERO,
+                                categoryRecordUnMapper.parseJSON(newCategory.hero())
+                            )
+                            .where(CATEGORY.ID.eq(foundCategory.id()))
+                            .execute();
+                    }
                 );
                 return count > 1;
             })
