@@ -24,7 +24,7 @@ public class JsonDeserializationTest {
     private static final ObjectMapper objectMapper = buildObjectMapper();
 
     @Test
-    void canDeserializeCollectionfResponse() throws JsonProcessingException {
+    void canDeserializeCollectionResponse() throws JsonProcessingException {
         String content = FileReader.readFile("category-pages/json/women-outerwear.json");
         assertThat(content).isNotEmpty();
 
