@@ -49,16 +49,16 @@ class CategoryMenuParserTest extends BaseRepositoryTest {
         // saves all categories and its children
         boolean saved = categoryRepository.saveTree(categories);
         assertThat(saved).isTrue();
-
+//
         Set<Collection> allCollections = CategoryMenuParser.getAllCollections(objectMapper);
         assertThat(allCollections).isNotNull().hasSize(37);
-
+//
         var collectionCategoryMapper = new CollectionCategoryMapper();
         List<Boolean> updates = allCollections.stream()
             .map(collectionCategoryMapper::convert)
             .map(categoryRepository::update)
             .collect(Collectors.toList());
-
+//
         assertThat(updates).hasSize(allCollections.size())
             .allMatch(it -> it);
     }

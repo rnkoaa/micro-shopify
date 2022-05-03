@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d1f2a36-5bb5-4945-8fe6-67e2d91b5fc1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/Strings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/CollectionResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordUnMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordUnMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/richard/frankoak/JsonDeserializationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/richard/frankoak/JsonDeserializationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/db/micro-shopify.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/db/micro-shopify.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,19 +83,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "last_opened_file_path": "/Users/rnkoaa/workspace/experiments/micro-shopify",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/rnkoaa/workspace/experiments/micro-shopify&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -289,11 +281,6 @@
           <url>file://$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java</url>
           <line>61</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java</url>
-          <line>50</line>
-          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

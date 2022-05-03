@@ -1,7 +1,6 @@
 package org.richard;
 
 import static org.microshopify.jooq.tables.Category.CATEGORY;
-import static org.richard.Strings.isNotNullOrEmpty;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
@@ -10,10 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
-import org.jooq.UpdateSetFirstStep;
-import org.jooq.UpdateSetMoreStep;
 import org.jooq.exception.DataAccessException;
-import org.microshopify.jooq.tables.records.CategoryRecord;
 import org.richard.frankoak.infra.jooq.CategoryRecordUnMapper;
 
 public class CategoryRepository {
@@ -30,6 +26,7 @@ public class CategoryRepository {
         Optional<Category> maybeCategory = findByHandle(category.url());
         return maybeCategory
             .map(foundCategory -> {
+                System.out.println("Found Category: -> " + foundCategory.name());
                 int count = dsl.transactionResult(configuration -> {
                         var newCategory = foundCategory.mergeWith(category);
                         return dsl.update(CATEGORY)
@@ -49,7 +46,7 @@ public class CategoryRepository {
                             .execute();
                     }
                 );
-                return count > 1;
+                return count == 1;
             })
             .orElse(false);
     }
@@ -84,9 +81,10 @@ public class CategoryRepository {
     boolean saveTree(Set<Category> categories) {
         return categories.stream()
             .map(category -> {
-                var savedCategory = save(category);
+                Category savedCategory = save(category);
                 var toSave = category.withId(savedCategory.id());
                 return saveChildren(toSave);
+//                return savedCategory;
             })
             .allMatch(it -> it.id() > 0);
     }
