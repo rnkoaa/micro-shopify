@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.richard.config.DatabaseConfig;
 import org.richard.config.ObjectMapperFactory;
+import org.richard.repository.CategoryRepository;
 
 public abstract class BaseRepositoryTest {
 

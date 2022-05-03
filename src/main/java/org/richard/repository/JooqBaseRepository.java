@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jooq.DSLContext;

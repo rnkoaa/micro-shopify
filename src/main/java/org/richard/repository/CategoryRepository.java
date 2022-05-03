@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.repository;
 
 import static org.microshopify.jooq.tables.Category.CATEGORY;
 
@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
+import org.richard.Category;
 import org.richard.frankoak.infra.jooq.CategoryRecordUnMapper;
 
 public class CategoryRepository extends JooqBaseRepository implements Repository<Category, Integer>,
@@ -46,7 +47,7 @@ public class CategoryRepository extends JooqBaseRepository implements Repository
                             .execute();
                     }
                 );
-                return count > 1;
+                return count == 1;
             })
             .orElse(false);
     }
@@ -80,7 +81,7 @@ public class CategoryRepository extends JooqBaseRepository implements Repository
         return categories.stream().map(this::save).toList();
     }
 
-    boolean saveTree(Set<Category> categories) {
+   public boolean saveTree(Set<Category> categories) {
         return categories.stream()
             .map(category -> {
                 var savedCategory = save(category);

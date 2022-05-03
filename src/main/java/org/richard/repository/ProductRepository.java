@@ -1,9 +1,10 @@
-package org.richard;
+package org.richard.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import org.jooq.DSLContext;
+import org.richard.Product;
 
 public class ProductRepository extends JooqBaseRepository implements Repository<Product, Integer>,
     HasHandle<Product> {

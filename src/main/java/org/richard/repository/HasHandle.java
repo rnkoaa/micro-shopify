@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.repository;
 
 import java.util.Optional;
 
