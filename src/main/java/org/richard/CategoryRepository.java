@@ -1,7 +1,6 @@
 package org.richard;
 
 import static org.microshopify.jooq.tables.Category.CATEGORY;
-import static org.richard.Strings.isNotNullOrEmpty;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
@@ -10,29 +9,27 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
-import org.jooq.UpdateSetFirstStep;
-import org.jooq.UpdateSetMoreStep;
 import org.jooq.exception.DataAccessException;
-import org.microshopify.jooq.tables.records.CategoryRecord;
 import org.richard.frankoak.infra.jooq.CategoryRecordUnMapper;
 
-public class CategoryRepository {
+public class CategoryRepository extends JooqBaseRepository implements Repository<Category, Integer>,
+    HasHandle<Category> {
 
-    private final DSLContext dsl;
     private final CategoryRecordUnMapper categoryRecordUnMapper;
 
     public CategoryRepository(DSLContext dsl, ObjectMapper objectMapper) {
-        this.dsl = dsl;
+        super(dsl, objectMapper);
         this.categoryRecordUnMapper = new CategoryRecordUnMapper(objectMapper);
     }
 
-    boolean update(Category category) {
+    @Override
+    public boolean update(Category category) {
         Optional<Category> maybeCategory = findByHandle(category.url());
         return maybeCategory
             .map(foundCategory -> {
-                int count = dsl.transactionResult(configuration -> {
+                int count = getDsl().transactionResult(configuration -> {
                         var newCategory = foundCategory.mergeWith(category);
-                        return dsl.update(CATEGORY)
+                        return getDsl().update(CATEGORY)
                             .set(CATEGORY.UPDATED_AT, Instant.now().toString())
                             .set(CATEGORY.HANDLE, newCategory.url())
                             .set(CATEGORY.DESCRIPTION, newCategory.description())
@@ -54,10 +51,11 @@ public class CategoryRepository {
             .orElse(false);
     }
 
-    Category save(Category category) {
-        return dsl.transactionResult(configuration -> {
+    @Override
+    public Category save(Category category) {
+        return getDsl().transactionResult(configuration -> {
             try {
-                Integer result = dsl.insertInto(CATEGORY)
+                Integer result = getDsl().insertInto(CATEGORY)
                     .set(categoryRecordUnMapper.unmap(category))
                     .returningResult(CATEGORY.ID)
                     .fetchOneInto(Integer.class);
@@ -77,7 +75,8 @@ public class CategoryRepository {
         });
     }
 
-    List<Category> save(List<Category> categories) {
+    @Override
+    public List<Category> save(List<Category> categories) {
         return categories.stream().map(this::save).toList();
     }
 
@@ -124,43 +123,50 @@ public class CategoryRepository {
         return cat;
     }
 
-    int count() {
-        return dsl.fetchCount(CATEGORY);
+    @Override
+    public int count() {
+        return getDsl().fetchCount(CATEGORY);
     }
 
-    List<Category> findAll() {
-        List<Category> categories = dsl.selectFrom(CATEGORY)
+    @Override
+    public List<Category> findAll() {
+        List<Category> categories = getDsl().selectFrom(CATEGORY)
             .fetchInto(Category.class);
 
         return List.copyOf(categories);
     }
 
-    boolean delete(int category) {
-        int deletedCount = dsl.delete(CATEGORY)
+    @Override
+    public boolean delete(Integer category) {
+        int deletedCount = getDsl().delete(CATEGORY)
             .where(CATEGORY.ID.eq(category))
             .execute();
         return deletedCount == 1;
     }
 
-    public Optional<Category> findById(int categoryId) {
-        Category category = dsl.selectFrom(CATEGORY)
+    @Override
+    public Optional<Category> findById(Integer categoryId) {
+        Category category = getDsl().selectFrom(CATEGORY)
             .where(CATEGORY.ID.eq(categoryId))
             .fetchOneInto(Category.class);
 
         return Optional.ofNullable(category);
     }
 
+    @Override
     public Optional<Category> findByHandle(String handle) {
-        Category category = dsl.selectFrom(CATEGORY)
+        Category category = getDsl().selectFrom(CATEGORY)
             .where(CATEGORY.HANDLE.eq(handle))
             .fetchOneInto(Category.class);
 
         return Optional.ofNullable(category);
     }
 
+    @Override
     public boolean deleteAll(boolean testing) {
         if (testing) {
-            dsl.delete(CATEGORY)
+            getDsl()
+                .delete(CATEGORY)
                 .execute();
             return true;
         }

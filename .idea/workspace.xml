@@ -5,18 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d1f2a36-5bb5-4945-8fe6-67e2d91b5fc1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/Strings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/HasHandle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/JooqBaseRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/ProductRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/richard/Repository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/richard/FileReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/richard/assertions/ProductAssertions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/richard/assertions/ProductItemResponseAssert.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/richard/assertions/ProductResponseAssert.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/data/product-detail-response.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/data/selvedge-slim-fit-jean-in-black.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryMenuParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/CategoryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/category/CollectionResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordUnMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/richard/frankoak/infra/jooq/CategoryRecordUnMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/richard/CategoryMenuParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/micro-shopify.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/micro-shopify.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V1__initial.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1__initial.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/richard/frankoak/JsonDeserializationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/richard/frankoak/JsonDeserializationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/db/micro-shopify.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/db/micro-shopify.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/db/micro-shopify.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,31 +115,11 @@
     <key name="CreateTestDialog.RecentsKey">
       <recent name="org.richard" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.richard.assertions" />
+    </key>
   </component>
   <component name="RunManager" selected="Gradle.CategoryMenuParserTest.readAndTestCollections">
-    <configuration name="CategoryMenuParserTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;org.richard.CategoryMenuParserTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="CategoryMenuParserTest.readAndTestCollections" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -159,7 +143,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="CategoryRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="JsonDeserializationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -172,7 +156,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.richard.CategoryRepositoryTest&quot;" />
+            <option value="&quot;org.richard.frankoak.JsonDeserializationTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -182,7 +166,28 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="micro-shopify [flywayMigrateTest]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Tests in 'micro-shopify.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="micro-shopify [flywayClean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -193,7 +198,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="flywayMigrateTest" />
+            <option value="flywayClean" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -203,7 +208,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="micro-shopify [generateJooq]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="micro-shopify [flywayMigrate]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -214,7 +219,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="generateJooq" />
+            <option value="flywayMigrate" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -238,10 +243,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.CategoryMenuParserTest.readAndTestCollections" />
-        <item itemvalue="Gradle.CategoryMenuParserTest" />
-        <item itemvalue="Gradle.CategoryRepositoryTest" />
-        <item itemvalue="Gradle.micro-shopify [flywayMigrateTest]" />
-        <item itemvalue="Gradle.micro-shopify [generateJooq]" />
+        <item itemvalue="Gradle.Tests in 'micro-shopify.test'" />
+        <item itemvalue="Gradle.JsonDeserializationTest" />
+        <item itemvalue="Gradle.micro-shopify [flywayMigrate]" />
+        <item itemvalue="Gradle.micro-shopify [flywayClean]" />
       </list>
     </recent_temporary>
   </component>
