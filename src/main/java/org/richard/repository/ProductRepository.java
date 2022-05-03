@@ -23,6 +23,27 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
         return false;
     }
 
+    //-- products
+    //create TABLE IF NOT EXISTS product (
+    //  id INTEGER PRIMARY KEY,
+    //  title TEXT NOT NULL,
+    //  available INTEGER,
+    //  html_description TEXT,
+    //  vendor TEXT,
+    //  product_type TEXT,
+    //  featured_image JSON,
+    //  swatch_color TEXT,
+    //  swatch_color_name TEXT,
+    //  price TEXT,
+    //  option_names JSON,
+    //  options JSON,
+    //  handle TEXT NOT NULL UNIQUE,
+    //  updated_at TEXT NOT NULL,
+    //  created_at TEXT NOT NULL,
+    //  published_at TEXT,
+    //  tags JSON,
+    //  UNIQUE(handle)
+    //);
     @Override
     public Product save(Product value) {
         return null;
