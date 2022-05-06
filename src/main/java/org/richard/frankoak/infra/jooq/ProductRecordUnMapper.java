@@ -22,13 +22,22 @@ public class ProductRecordUnMapper implements RecordUnmapper<Product, ProductRec
         if (source.id() > 0) {
             record.setId(source.id());
         }
+
+        Instant createdAt = source.createdAt() != null ? source.createdAt() : Instant.now();
+        Instant updatedAt = source.updatedAt() != null ? source.updatedAt() : Instant.now();
+
+        record.setCreatedAt(createdAt.toString());
+        record.setUpdatedAt(updatedAt.toString());
+
         record.setTitle(source.title());
         record.setHandle(source.link());
         record.setProductType(source.type());
         record.setPrice(source.price());
+        record.setVendor(source.vendor());
         record.setAvailable(source.available() ? 1 : 0);
         record.setCreatedAt(Instant.now().toString());
         record.setUpdatedAt(Instant.now().toString());
+//        record.setFeaturedImage();
 
         return record;
     }

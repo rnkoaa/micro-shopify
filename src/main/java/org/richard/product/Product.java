@@ -1,19 +1,26 @@
 package org.richard.product;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public record Product(
     int id,
     String title,
     String price,
     String link,
+    String vendor,
     String coverImage,
     boolean available,
     String type,
     List<String> tags,
     List<Image> images,
-    List<Variant> variants
+    List<Variant> variants,
+    Set<ProductOption> options,
+    SwatchColor swatchColor,
+    Instant createdAt,
+    Instant updatedAt
 ) {
 
     public static Builder builder() {
@@ -42,6 +49,11 @@ public record Product(
         private List<String> tags;
         private List<Image> images;
         private List<Variant> variants;
+        private String vendor;
+        private Set<ProductOption> options;
+        private SwatchColor swatchColor;
+        private Instant createdAt;
+        private Instant updatedAt;
 
         public Builder() {}
 
@@ -56,6 +68,8 @@ public record Product(
             this.tags = product.tags;
             this.images = product.images;
             this.variants = product.variants;
+            this.createdAt = product.createdAt;
+            this.updatedAt = product.updatedAt;
         }
 
         public Builder id(int id) {
@@ -73,6 +87,11 @@ public record Product(
             return this;
         }
 
+        public Builder vendor(String vendor) {
+            this.vendor = vendor;
+            return this;
+        }
+
         public Builder tags(List<String> tags) {
             this.tags = tags;
             return this;
@@ -85,6 +104,11 @@ public record Product(
 
         public Builder variants(List<Variant> variants) {
             this.variants = variants;
+            return this;
+        }
+
+        public Builder options(Set<ProductOption> options) {
+            this.options = options;
             return this;
         }
 
@@ -116,9 +140,26 @@ public record Product(
             return this;
         }
 
+        public Builder swatchColor(SwatchColor swatchColor) {
+            this.swatchColor = swatchColor;
+            return this;
+        }
+
+        public Builder createdAt(Instant createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder updatedAt(Instant updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
         public Product build() {
-            return new Product(id, title, price, link, coverImage, available,
-                type, tags, images, variants);
+            return new Product(id, title, price, link, vendor,
+                coverImage, available,
+                type, tags, images, variants, options, swatchColor,
+                createdAt, updatedAt);
         }
 
     }

@@ -10,6 +10,7 @@ public record ProductResponse(
     boolean available,
     String handle,
     String title,
+    String vendor,
     String type,
     String featuredImage,
     List<String> tags,

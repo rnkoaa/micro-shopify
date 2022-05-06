@@ -2,8 +2,12 @@ package org.richard;
 
 import static org.richard.IntegerUtils.safeParse;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.richard.frankoak.category.ProductImage;
 import org.richard.frankoak.category.ProductResponse;
 import org.richard.frankoak.category.ProductVariant;
@@ -12,6 +16,8 @@ import org.richard.product.Image;
 import org.richard.product.ImageSize;
 import org.richard.product.Inventory;
 import org.richard.product.Product;
+import org.richard.product.ProductOption;
+import org.richard.product.SwatchColor;
 import org.richard.product.Variant;
 
 public class ProductResponseMapper implements ResponseConverter<Product, ProductResponse> {
@@ -26,9 +32,32 @@ public class ProductResponseMapper implements ResponseConverter<Product, Product
             .available(productResponse.available())
             .type(productResponse.type())
             .price(productResponse.price())
+            .vendor(productResponse.vendor())
             .images(convertImages(productResponse.images()))
+            .options(createProductOptions(productResponse))
+            .swatchColor(createSwatchColor(productResponse))
             .variants(convertVariants(productResponse.variants()));
         return builder.build();
+    }
+
+    private SwatchColor createSwatchColor(ProductResponse productResponse) {
+        if (productResponse.swatchColorName() == null || productResponse.swatchColor() == null) {
+            return null;
+        }
+
+        return new SwatchColor(productResponse.swatchColorName(), productResponse.swatchColor());
+    }
+
+    private Set<ProductOption> createProductOptions(ProductResponse productResponse) {
+        Map<String, List<String>> optionsWithValues = productResponse.optionsWithValues();
+        if (optionsWithValues == null) {
+            return Set.of();
+        }
+
+        return optionsWithValues.entrySet()
+            .stream()
+            .map(entry -> new ProductOption(entry.getKey(), new HashSet<>(entry.getValue())))
+            .collect(Collectors.toSet());
     }
 
     private List<Variant> convertVariants(List<ProductVariant> variants) {

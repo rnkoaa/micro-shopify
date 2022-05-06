@@ -1,6 +1,7 @@
 package org.richard.frankoak.infra.jooq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.RecordMapper;
 import org.microshopify.jooq.tables.records.ProductRecord;
@@ -25,7 +26,10 @@ public class ProductRecordMapper implements RecordMapper<ProductRecord, Product>
             .link(record.getHandle())
             .type(record.getProductType())
             .price(record.getPrice())
-            .available(record.getAvailable() > 0);
+            .available(record.getAvailable() > 0)
+            .vendor(record.getVendor())
+            .createdAt(Instant.parse(record.getCreatedAt()))
+            .updatedAt(Instant.parse(record.getUpdatedAt()));
 
         return productBuilder.build();
     }
