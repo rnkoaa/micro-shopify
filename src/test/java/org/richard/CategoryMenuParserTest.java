@@ -10,6 +10,7 @@ import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 import org.richard.frankoak.category.Collection;
 import org.richard.product.Category;
+import org.richard.repository.BaseRepositoryTest;
 
 class CategoryMenuParserTest extends BaseRepositoryTest {
 

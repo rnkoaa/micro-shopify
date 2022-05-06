@@ -16,6 +16,13 @@ public class ProductAssert extends AbstractAssert<ProductAssert, Product> {
         }
         return this;
     }
+    public ProductAssert hasId(int id) {
+        isNotNull();
+        if (actual.id() != id) {
+            failWithMessage("Expected product to have id %d but was %d", id, actual.id());
+        }
+        return this;
+    }
 
     public ProductAssert hasType(String type) {
         isNotNull();
@@ -83,6 +90,16 @@ public class ProductAssert extends AbstractAssert<ProductAssert, Product> {
             failWithMessage("Expected product to have images with size %d but was %d", size,
                 actual.images().size());
         }
+        return this;
+    }
+
+    public ProductAssert hasSameIdAs(Product product) {
+        isNotNull();
+        if (actual.id() != product.id()) {
+            failWithMessage("Expected product to have id %d but was %d", product.id(),  actual.id());
+            return this;
+        }
+
         return this;
     }
 }

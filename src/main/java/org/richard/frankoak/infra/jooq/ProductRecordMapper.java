@@ -22,6 +22,7 @@ public class ProductRecordMapper implements RecordMapper<ProductRecord, Product>
         }
 
         var productBuilder = Product.builder()
+            .id(record.getId())
             .title(record.getTitle())
             .link(record.getHandle())
             .type(record.getProductType())
