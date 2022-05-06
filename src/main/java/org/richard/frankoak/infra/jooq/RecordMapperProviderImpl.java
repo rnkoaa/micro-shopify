@@ -8,15 +8,19 @@ import org.jooq.RecordMapperProvider;
 import org.jooq.RecordType;
 import org.jooq.impl.DefaultRecordMapper;
 import org.microshopify.jooq.tables.records.CategoryRecord;
-import org.richard.Category;
+import org.microshopify.jooq.tables.records.ProductRecord;
+import org.richard.product.Category;
+import org.richard.product.Product;
 
 @SuppressWarnings("unchecked")
 public class RecordMapperProviderImpl implements RecordMapperProvider {
 
     private final CategoryRecordMapper categoryRecordMapper;
+    private final ProductRecordMapper productRecordMapper;
 
     public RecordMapperProviderImpl(ObjectMapper objectMapper) {
         this.categoryRecordMapper = new CategoryRecordMapper(objectMapper);
+        this.productRecordMapper = new ProductRecordMapper(objectMapper);
     }
 
     @Override
@@ -25,11 +29,10 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
         if (type == Category.class) {
             return record -> (E) categoryRecordMapper.map((CategoryRecord) record);
         }
+        if (type == Product.class) {
+            return record -> (E) productRecordMapper.map((ProductRecord) record);
+        }
 
-//        if (type == EventMessage.class) {
-//            return record -> (E) new EventMessageRecordMapper(new EventJsonConverter(objectMapper))
-//                .map((EventRecord) record);
-//        }
         return new DefaultRecordMapper<>(recordType, type);
     }
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
-import org.richard.Category;
+import org.richard.product.Category;
 import org.richard.frankoak.infra.jooq.CategoryRecordUnMapper;
 
 public class CategoryRepository extends JooqBaseRepository implements Repository<Category, Integer>,

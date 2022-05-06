@@ -16,7 +16,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.richard.Category.Builder;
+import org.richard.product.Category;
+import org.richard.product.Category.Builder;
 import org.richard.frankoak.category.Collection;
 import org.richard.frankoak.category.CollectionResponse;
 

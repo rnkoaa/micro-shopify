@@ -9,7 +9,6 @@ public class ProductResponseAssert extends AbstractAssert<ProductResponseAssert,
         super(actual, ProductResponseAssert.class);
     }
 
-
     public ProductResponseAssert hasTitle(String title) {
         isNotNull();
         if (!actual.title().equals(title)) {

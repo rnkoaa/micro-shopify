@@ -7,13 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 import org.richard.FileReader;
-import org.richard.assertions.ProductAssertions;
+import org.richard.assertions.MyAssertions;
 import org.richard.frankoak.category.CollectionResponse;
 import org.richard.frankoak.category.ProductResponse;
 import org.richard.frankoak.product.ProductDetailResponse;
@@ -104,7 +100,7 @@ public class JsonDeserializationTest {
         ProductResponse productResponse = objectMapper.readValue(inputStream, ProductResponse.class);
         assertThat(productResponse).isNotNull();
 
-        ProductAssertions.assertThat(productResponse)
+        MyAssertions.assertThat(productResponse)
             .isAvailable()
             .hasHandle("1210451-003")
             .hasTitle("The Selvedge Slim Fit Jean in Black")

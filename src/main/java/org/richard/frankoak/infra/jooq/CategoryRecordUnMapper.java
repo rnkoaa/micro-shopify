@@ -8,7 +8,7 @@ import org.jooq.JSON;
 import org.jooq.RecordUnmapper;
 import org.jooq.exception.MappingException;
 import org.microshopify.jooq.tables.records.CategoryRecord;
-import org.richard.Category;
+import org.richard.product.Category;
 
 public class CategoryRecordUnMapper implements RecordUnmapper<Category, CategoryRecord> {
 
@@ -44,13 +44,6 @@ public class CategoryRecordUnMapper implements RecordUnmapper<Category, Category
             record.setHero(parseJSON(source.hero()));
         }
         return record;
-    }
-
-    int safeParse(String value) {
-        if (value == null || value.isEmpty()) {
-            return 0;
-        }
-        return Integer.parseInt(value);
     }
 
     public JSON parseJSON(Object value) {

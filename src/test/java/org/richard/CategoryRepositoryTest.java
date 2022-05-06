@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.richard.frankoak.category.Collection;
+import org.richard.product.Category;
 
 class CategoryRepositoryTest extends BaseRepositoryTest {
 

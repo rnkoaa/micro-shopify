@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 import org.richard.frankoak.category.Collection;
+import org.richard.product.Category;
 
 class CategoryMenuParserTest extends BaseRepositoryTest {
 

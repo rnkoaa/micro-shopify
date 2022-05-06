@@ -1,13 +1,11 @@
-package org.richard;
+package org.richard.product;
 
 import static org.richard.Strings.isNotNullOrEmpty;
 import static org.richard.Strings.isNullOrEmpty;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

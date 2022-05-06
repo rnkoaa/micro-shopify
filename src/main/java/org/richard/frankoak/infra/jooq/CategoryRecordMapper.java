@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jooq.JSON;
 import org.jooq.RecordMapper;
 import org.microshopify.jooq.tables.records.CategoryRecord;
-import org.richard.Category;
-import org.richard.Category.Builder;
+import org.richard.product.Category;
+import org.richard.product.Category.Builder;
 import org.richard.frankoak.SortOption;
 
 public class CategoryRecordMapper implements RecordMapper<CategoryRecord, Category> {

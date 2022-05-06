@@ -27,6 +27,7 @@ import org.richard.frankoak.ProductDetailDownloader;
 import org.richard.frankoak.product.ImageItem;
 import org.richard.frankoak.product.ProductDetailResponse;
 import org.richard.frankoak.product.ProductItemResponse;
+import org.richard.product.Category;
 
 public class MainApp {
 

@@ -6,8 +6,9 @@ import org.richard.frankoak.SortOption;
 import org.richard.frankoak.category.Collection;
 import org.richard.frankoak.category.CollectionHero;
 import org.richard.frankoak.category.CollectionSortOption;
+import org.richard.product.Category;
 
-public class CollectionCategoryMapper {
+public class CollectionCategoryMapper implements ResponseConverter<Category, Collection> {
 
     public Category convert(Collection collection) {
         return Category.builder()
