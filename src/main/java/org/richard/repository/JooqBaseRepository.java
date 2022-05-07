@@ -5,7 +5,6 @@ import org.jooq.DSLContext;
 
 public abstract class JooqBaseRepository {
 
-
     private final DSLContext dsl;
     private final ObjectMapper objectMapper;
 

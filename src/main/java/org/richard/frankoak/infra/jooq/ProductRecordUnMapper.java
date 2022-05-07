@@ -42,7 +42,7 @@ public class ProductRecordUnMapper extends JooqJsonHandler implements RecordUnma
         record.setCreatedAt(Instant.now().toString());
         record.setUpdatedAt(Instant.now().toString());
 
-        var featuredImage = new Image(source.coverImage(), "", null);
+        var featuredImage = new Image(0, source.coverImage(), "", 0, source, null, null, null);
         record.setFeaturedImage(parseJSON(featuredImage));
 
         return record;

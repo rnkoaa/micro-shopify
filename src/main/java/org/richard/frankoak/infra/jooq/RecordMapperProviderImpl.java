@@ -8,8 +8,10 @@ import org.jooq.RecordMapperProvider;
 import org.jooq.RecordType;
 import org.jooq.impl.DefaultRecordMapper;
 import org.microshopify.jooq.tables.records.CategoryRecord;
+import org.microshopify.jooq.tables.records.ImageRecord;
 import org.microshopify.jooq.tables.records.ProductRecord;
 import org.richard.product.Category;
+import org.richard.product.Image;
 import org.richard.product.Product;
 
 @SuppressWarnings("unchecked")
@@ -17,10 +19,12 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
 
     private final CategoryRecordMapper categoryRecordMapper;
     private final ProductRecordMapper productRecordMapper;
+    private final ImageRecordMapper imageRecordMapper;
 
     public RecordMapperProviderImpl(ObjectMapper objectMapper) {
         this.categoryRecordMapper = new CategoryRecordMapper(objectMapper);
         this.productRecordMapper = new ProductRecordMapper(objectMapper);
+        this.imageRecordMapper = new ImageRecordMapper();
     }
 
     @Override
@@ -31,6 +35,9 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
         }
         if (type == Product.class) {
             return record -> (E) productRecordMapper.map((ProductRecord) record);
+        }
+        if (type == Image.class) {
+            return record -> (E) imageRecordMapper.map((ImageRecord) record);
         }
 
         return new DefaultRecordMapper<>(recordType, type);

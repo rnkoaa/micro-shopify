@@ -2,6 +2,7 @@ package org.richard;
 
 import static org.richard.IntegerUtils.safeParse;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,7 @@ public class ProductResponseMapper implements ResponseConverter<Product, Product
         if (image == null) {
             return null;
         }
-        return new Image(image.src(), image.alt(), null);
+        return new Image(0, image.src(), image.alt(), 0, null, null, Instant.now(), Instant.now());
     }
 
     private Inventory createInventory(int inventoryQuantity) {
@@ -100,10 +101,15 @@ public class ProductResponseMapper implements ResponseConverter<Product, Product
     }
 
     private Image imageImage(ProductImage productImage) {
-        return new Image(productImage.src(), productImage.alt(),
+        return new Image(0,
+            productImage.src(), productImage.alt(),
+            0,
+            null,
             new ImageSize(
                 safeParse(productImage.width()), safeParse(productImage.height())
-            )
+            ),
+            Instant.now(),
+            Instant.now()
         );
     }
 }

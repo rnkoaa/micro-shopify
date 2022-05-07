@@ -26,13 +26,13 @@ public abstract class BaseRepositoryTest {
 
     @BeforeEach
     void cleanupBeforeTest() {
-        assertThat(categoryRepository.deleteAll(true)).isTrue();
-        assertThat(productRepository.deleteAll(true)).isTrue();
+        categoryRepository.deleteAll(true);
+        productRepository.deleteAll(true);
     }
 
     @AfterEach
     void cleanupAfterTest() {
-        assertThat(categoryRepository.deleteAll(true)).isTrue();
-        assertThat(productRepository.deleteAll(true)).isTrue();
+        categoryRepository.deleteAll(true);
+        productRepository.deleteAll(true);
     }
 }

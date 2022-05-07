@@ -38,6 +38,14 @@ public record Product(
             .build();
     }
 
+    public Product clone() {
+       return toBuilder().build();
+    }
+
+    public Product withImages(List<Image> images) {
+       return toBuilder().images(images).build();
+    }
+
     public static class Builder {
 
         private int id;

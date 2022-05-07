@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS image (
     alt TEXT,
     width INTEGER,
     height INTEGER,
-    src TEXT,
+    src TEXT unique,
     variant_ids TEXT,
     FOREIGN KEY (product_id) REFERENCES product (id)
       ON DELETE CASCADE ON UPDATE NO ACTION

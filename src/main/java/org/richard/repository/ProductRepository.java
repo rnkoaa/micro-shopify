@@ -1,5 +1,6 @@
 package org.richard.repository;
 
+import static org.microshopify.jooq.tables.Image.IMAGE;
 import static org.microshopify.jooq.tables.Product.PRODUCT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,17 +8,21 @@ import java.util.List;
 import java.util.Optional;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
+import org.richard.frankoak.infra.jooq.ImageRecordUnMapper;
 import org.richard.frankoak.infra.jooq.ProductRecordUnMapper;
+import org.richard.product.Image;
 import org.richard.product.Product;
 
 public class ProductRepository extends JooqBaseRepository implements Repository<Product, Integer>,
     HasHandle<Product> {
 
     private final ProductRecordUnMapper productRecordUnMapper;
+    private final ImageRecordUnMapper imageRecordUnMapper;
 
     public ProductRepository(DSLContext dsl, ObjectMapper objectMapper) {
         super(dsl, objectMapper);
         this.productRecordUnMapper = new ProductRecordUnMapper(objectMapper);
+        this.imageRecordUnMapper = new ImageRecordUnMapper();
     }
 
     @Override
@@ -42,10 +47,18 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
                     .returningResult(PRODUCT.ID)
                     .fetchOneInto(Integer.class);
 
+                final var savedProduct = product.clone()
+                    .withId(result);
                 // insert all its children with category as
+                if (product.images() != null) {
+                    List<Image> images = product.images()
+                        .stream().map(image -> saveImage(savedProduct, image))
+                        .toList();
+//                    savedProduct = savedProduct.withImages(images);
+                }
 
                 if (result != null) {
-                    return product.withId(result);
+                    return savedProduct;
                 }
                 return product;
             } catch (DataAccessException ex) {
@@ -55,6 +68,16 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
             }
             return product;
         });
+    }
+
+    private Image saveImage(Product product, Image image) {
+        var toSave = image.withProduct(product);
+        Integer result = getDsl()
+            .insertInto(IMAGE)
+            .set(imageRecordUnMapper.unmap(toSave))
+            .returningResult(IMAGE.ID)
+            .fetchOneInto(Integer.class);
+        return image.withId(result);
     }
 
     @Override
@@ -84,20 +107,46 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
 
     @Override
     public boolean delete(Integer id) {
-        int execute = getDsl()
-            .delete(PRODUCT)
-            .where(PRODUCT.ID.eq(id))
-            .execute();
-        return execute > 0;
+        return getDsl().transactionResult(configuration -> {
+            if (!deleteImages(id)) {
+                return false;
+            }
+            int execute = getDsl()
+                .delete(PRODUCT)
+                .where(PRODUCT.ID.eq(id))
+                .execute();
+            return execute > 0;
+        });
     }
 
     @Override
     public boolean deleteAll(boolean testing) {
         if (testing) {
-            getDsl()
-                .delete(PRODUCT)
-                .execute();
-            return true;
+            return getDsl().transactionResult(configuration -> {
+                if (!deleteAllImages(testing)) {
+                    return false;
+                }
+
+                return getDsl()
+                    .delete(PRODUCT)
+                    .execute() > 0;
+            });
+        }
+        return false;
+    }
+
+    private boolean deleteImages(Integer id) {
+        return getDsl()
+            .delete(IMAGE)
+            .where(IMAGE.PRODUCT_ID.eq(id))
+            .execute() > 0;
+    }
+
+    private boolean deleteAllImages(boolean test) {
+        if (test) {
+            return getDsl()
+                .delete(IMAGE)
+                .execute() > 0;
         }
         return false;
     }
