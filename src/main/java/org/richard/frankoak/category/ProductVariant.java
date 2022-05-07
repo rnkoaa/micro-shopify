@@ -7,6 +7,7 @@ public record ProductVariant(
     String title,
     String id,
     String price,
+    String handle,
     @JsonProperty("compare_at_price")
     String compareAtPrice,
     VariantImage image,

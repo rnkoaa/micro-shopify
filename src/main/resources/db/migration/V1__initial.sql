@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS variant (
     weight_unit TEXT,
     tax_code TEXT,
     requires_shipping INTEGER,
+    available INTEGER,
     UNIQUE(product_id, title),
     FOREIGN KEY (product_id) REFERENCES product (id)
       ON DELETE CASCADE ON UPDATE NO ACTION

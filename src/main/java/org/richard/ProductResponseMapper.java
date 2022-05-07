@@ -37,7 +37,7 @@ public class ProductResponseMapper implements ResponseConverter<Product, Product
             .images(convertImages(productResponse.images()))
             .options(createProductOptions(productResponse))
             .swatchColor(createSwatchColor(productResponse))
-            .variants(convertVariants(productResponse.variants()));
+            .variants(convertVariants(productResponse));
         return builder.build();
     }
 
@@ -61,26 +61,39 @@ public class ProductResponseMapper implements ResponseConverter<Product, Product
             .collect(Collectors.toSet());
     }
 
-    private List<Variant> convertVariants(List<ProductVariant> variants) {
+    private List<Variant> convertVariants(ProductResponse productResponse) {
+        List<ProductVariant> variants = productResponse.variants();
         if (variants == null) {
             return List.of();
         }
         return variants.stream()
-            .map(this::convertVariant)
+            .map(variant -> convertVariant(productResponse, variant))
             .filter(Objects::nonNull)
             .toList();
     }
 
-    private Variant convertVariant(ProductVariant productVariant) {
+    private Variant convertVariant(ProductResponse productResponse, ProductVariant productVariant) {
         if (productVariant == null) {
             return null;
         }
 
-        return new Variant(productVariant.title(), productVariant.price(),
-            createVariantImage(productVariant.image()),
-            createInventory(productVariant.inventoryQuantity()),
-            productVariant.available()
-        );
+        String variantHandle = productVariant.handle();
+        if (Strings.isNullOrEmpty(variantHandle)) {
+            variantHandle = createVariantHandle(
+                productResponse.handle(),
+                productVariant.title());
+        }
+
+        return Variant.builder()
+            .title(productVariant.title())
+            .price(productVariant.price())
+            .handle(variantHandle)
+            .image(createVariantImage(productVariant.image()))
+            .inventory(createInventory(productVariant.inventoryQuantity()))
+            .available(productVariant.available())
+            .createdAt(Instant.now())
+            .updatedAt(Instant.now())
+            .build();
     }
 
     private Image createVariantImage(VariantImage image) {
@@ -111,5 +124,11 @@ public class ProductResponseMapper implements ResponseConverter<Product, Product
             Instant.now(),
             Instant.now()
         );
+    }
+
+    String createVariantHandle(String productHandle, String variantName) {
+        String product = productHandle.replaceAll("(\\\\s)+|(&)+", "-").toLowerCase();
+        String name = variantName.replaceAll("(\\s)+|(&)+", "-").toLowerCase();
+        return "%s-%s".formatted(product, name);
     }
 }
