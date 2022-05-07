@@ -1,5 +1,6 @@
-package org.richard.frankoak.infra.jooq;
+package org.richard.infra.jooq;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.RecordUnmapper;
@@ -7,7 +8,11 @@ import org.jooq.exception.MappingException;
 import org.microshopify.jooq.tables.records.VariantRecord;
 import org.richard.product.Variant;
 
-public class VariantRecordUnMapper implements RecordUnmapper<Variant, VariantRecord> {
+public class VariantRecordUnMapper extends JooqJsonHandler implements RecordUnmapper<Variant, VariantRecord> {
+
+    public VariantRecordUnMapper(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
 
     @Override
     public @NotNull VariantRecord unmap(Variant source) throws MappingException {
@@ -20,6 +25,14 @@ public class VariantRecordUnMapper implements RecordUnmapper<Variant, VariantRec
         variantRecord.setAvailable(source.available() ? 1 : 0);
         variantRecord.setProductId(source.product().id());
         variantRecord.setHandle(source.handle());
+
+        if (source.inventory() != null) {
+            variantRecord.setInventory(parseJSON(source.inventory()));
+        }
+
+        if (source.image() != null && source.image().id() > 0) {
+            variantRecord.setImageId(source.image().id());
+        }
 
         variantRecord.setCreatedAt(
             source.createdAt() != null ? source.createdAt().toString() : Instant.now().toString());

@@ -31,6 +31,12 @@ public record Variant(
             .build();
     }
 
+    public Variant withImage(Image image) {
+        return new Builder(this)
+            .image(image)
+            .build();
+    }
+
     public static class Builder {
 
         private int id;

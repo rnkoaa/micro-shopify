@@ -1,4 +1,4 @@
-package org.richard.frankoak.infra.jooq;
+package org.richard.infra.jooq;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jooq.JSON;
 import org.jooq.RecordMapper;
 import org.microshopify.jooq.tables.records.ProductRecord;
-import org.richard.Strings;
+import org.richard.utils.Strings;
 import org.richard.product.Image;
 import org.richard.product.Product;
 import org.richard.product.ProductOption;

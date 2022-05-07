@@ -1,4 +1,4 @@
-package org.richard.frankoak.infra.jooq;
+package org.richard.infra.jooq;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +42,6 @@ public class CategoryRecordMapper extends JooqJsonHandler implements RecordMappe
             categoryBuilder.createdAt(Instant.parse(createdAt));
         }
         JSON defaultFilterGroups = record.getDefaultFilterGroups();
-        JSON hero = record.getHero();
 
         if (record.getSortOptions() != null) {
             String data = record.getSortOptions().data();
@@ -60,6 +59,7 @@ public class CategoryRecordMapper extends JooqJsonHandler implements RecordMappe
             }
         }
 
+        JSON hero = record.getHero();
         if (hero != null) {
             String heroData = hero.data();
             if (!heroData.isEmpty()) {

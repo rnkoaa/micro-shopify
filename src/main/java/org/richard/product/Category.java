@@ -1,7 +1,7 @@
 package org.richard.product;
 
-import static org.richard.Strings.isNotNullOrEmpty;
-import static org.richard.Strings.isNullOrEmpty;
+import static org.richard.utils.Strings.isNotNullOrEmpty;
+import static org.richard.utils.Strings.isNullOrEmpty;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -24,6 +24,7 @@ public record Category(
     List<String> defaultFilterGroups,
     Category parent,
     Set<Category> children,
+    List<Product> products,
     Instant createdAt,
     Instant updatedAt
 ) {
@@ -87,6 +88,12 @@ public record Category(
         return categoryBuilder.build();
     }
 
+    public Category withProducts(List<Product> products) {
+        return new Builder(this)
+            .products(products)
+            .build();
+    }
+
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
 
@@ -103,6 +110,7 @@ public record Category(
         private Set<Category> children;
         private Instant createdAt;
         private Instant updatedAt;
+        private List<Product> products;
 
         public Builder() {}
 
@@ -119,6 +127,7 @@ public record Category(
             this.children = category.children;
             this.createdAt = category.createdAt;
             this.updatedAt = category.updatedAt;
+            this.products = category.products;
         }
 
         public Builder id(int id) {
@@ -166,6 +175,11 @@ public record Category(
             return this;
         }
 
+        public Builder products(List<Product> products) {
+            this.products = products;
+            return this;
+        }
+
         public Builder defaultFilterGroups(List<String> defaultFilterGroups) {
             this.defaultFilterGroups = defaultFilterGroups;
             return this;
@@ -174,15 +188,6 @@ public record Category(
         public Builder children(Set<Category> children) {
             this.children = children;
             return this;
-        }
-
-        public Category build() {
-            return new Category(id, name, url,
-                description,
-                position,
-                hero,
-                sortOptions, defaultFilterGroups, parent,
-                children, createdAt, updatedAt);
         }
 
         public Builder updatedAt(Instant updatedAt) {
@@ -194,6 +199,18 @@ public record Category(
             this.createdAt = createdAt;
             return this;
         }
+
+        public Category build() {
+            return new Category(id, name, url,
+                description,
+                position,
+                hero,
+                sortOptions, defaultFilterGroups, parent,
+                children,
+                products,
+                createdAt, updatedAt);
+        }
+
     }
 
     public String toSimpleString() {

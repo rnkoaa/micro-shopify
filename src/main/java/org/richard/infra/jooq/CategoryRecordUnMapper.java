@@ -1,4 +1,4 @@
-package org.richard.frankoak.infra.jooq;
+package org.richard.infra.jooq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;

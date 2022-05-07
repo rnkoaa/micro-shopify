@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.utils;
 
 public class Strings {
 

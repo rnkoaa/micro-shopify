@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
 import org.richard.product.Category;
-import org.richard.frankoak.infra.jooq.CategoryRecordUnMapper;
+import org.richard.infra.jooq.CategoryRecordUnMapper;
 
 public class CategoryRepository extends JooqBaseRepository implements Repository<Category, Integer>,
     HasHandle<Category> {
@@ -54,9 +54,9 @@ public class CategoryRepository extends JooqBaseRepository implements Repository
 
     @Override
     public Category save(Category category) {
-        return getDsl().transactionResult(configuration -> {
+        return getDsl().transactionResult(trx -> {
             try {
-                Integer result = getDsl().insertInto(CATEGORY)
+                Integer result = trx.dsl().insertInto(CATEGORY)
                     .set(categoryRecordUnMapper.unmap(category))
                     .returningResult(CATEGORY.ID)
                     .fetchOneInto(Integer.class);
@@ -70,6 +70,15 @@ public class CategoryRepository extends JooqBaseRepository implements Repository
             } catch (DataAccessException ex) {
                 if (ex.getMessage().contains("SQLITE_CONSTRAINT_UNIQUE")) {
                     System.out.println("Unique Constraint: " + category);
+                    Integer result = trx.dsl()
+                        .select(CATEGORY.ID)
+                        .from(CATEGORY)
+                        .where(CATEGORY.HANDLE.eq(category.url()))
+                        .fetchOneInto(Integer.class);
+                    if (result == null) {
+                        return category;
+                    }
+                    return category.withId(result);
                 }
             }
             return category;
@@ -81,7 +90,7 @@ public class CategoryRepository extends JooqBaseRepository implements Repository
         return categories.stream().map(this::save).toList();
     }
 
-   public boolean saveTree(Set<Category> categories) {
+    public boolean saveTree(Set<Category> categories) {
         return categories.stream()
             .map(category -> {
                 var savedCategory = save(category);
@@ -133,7 +142,6 @@ public class CategoryRepository extends JooqBaseRepository implements Repository
     public List<Category> findAll() {
         List<Category> categories = getDsl().selectFrom(CATEGORY)
             .fetchInto(Category.class);
-
         return List.copyOf(categories);
     }
 

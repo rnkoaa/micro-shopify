@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.frankoak.fs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -37,7 +37,7 @@ public class CategoryMenuParser {
         }
     }
 
-    static Set<Category> parseMenu() throws IOException {
+    public static Set<Category> parseMenu() throws IOException {
         Set<Category> categories = new HashSet<>();
         String content = Files.readString(Paths.get("data/header-nav.html"));
         Document document = Jsoup.parse(content);

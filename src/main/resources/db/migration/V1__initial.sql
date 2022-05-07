@@ -69,24 +69,11 @@ CREATE TABLE IF NOT EXISTS variant (
     tax_code TEXT,
     requires_shipping INTEGER,
     available INTEGER,
+    inventory JSON,
     UNIQUE(product_id, title),
     FOREIGN KEY (product_id) REFERENCES product (id)
       ON DELETE CASCADE ON UPDATE NO ACTION
 );
-
-CREATE TABLE IF NOT EXISTS product_inventory (
-    id INTEGER NOT NULL PRIMARY KEY,
-    product_id INTEGER NOT NULL,
-    variant_id INTEGER NOT NULL,
-    quantity INTEGER,
-    updated_at TEXT NOT NULL,
-    created_at TEXT NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product (id)
-      ON DELETE CASCADE ON UPDATE NO ACTION,
-    FOREIGN KEY (variant_id) REFERENCES variant (id)
-      ON DELETE CASCADE ON UPDATE NO ACTION
-);
-
 
 CREATE TABLE IF NOT EXISTS image (
     id INTEGER NOT NULL PRIMARY KEY,

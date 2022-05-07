@@ -1,4 +1,4 @@
-package org.richard.frankoak.infra.jooq;
+package org.richard.infra.jooq;
 
 import java.time.Instant;
 import org.jetbrains.annotations.NotNull;

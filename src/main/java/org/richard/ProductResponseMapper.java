@@ -1,6 +1,6 @@
 package org.richard;
 
-import static org.richard.IntegerUtils.safeParse;
+import static org.richard.utils.IntegerUtils.safeParse;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -20,6 +20,7 @@ import org.richard.product.Product;
 import org.richard.product.ProductOption;
 import org.richard.product.SwatchColor;
 import org.richard.product.Variant;
+import org.richard.utils.Strings;
 
 public class ProductResponseMapper implements ResponseConverter<Product, ProductResponse> {
 

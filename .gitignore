@@ -44,4 +44,5 @@ bin/
 
 category-pages/
 product-pages/
+src/main/resources/db/micro-shopify.db
 src/test/resources/db/micro-shopify.db

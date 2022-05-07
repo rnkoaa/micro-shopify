@@ -22,7 +22,7 @@ public record Product(
     SwatchColor swatchColor,
     Instant createdAt,
     Instant updatedAt
-) {
+) implements Cloneable {
 
     public static Builder builder() {
         return new Builder();
@@ -38,12 +38,20 @@ public record Product(
             .build();
     }
 
-    public Product clone() {
-       return toBuilder().build();
+    public Product clone() throws CloneNotSupportedException {
+        super.clone();
+        return toBuilder().build();
     }
 
     public Product withImages(List<Image> images) {
-       return toBuilder().images(images).build();
+        return toBuilder()
+            .images(images)
+            .build();
+    }
+
+    public Product withVariants(List<Variant> savedVariants) {
+        return toBuilder().variants(savedVariants)
+            .build();
     }
 
     public static class Builder {

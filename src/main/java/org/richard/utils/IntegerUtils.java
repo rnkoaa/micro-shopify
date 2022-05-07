@@ -1,8 +1,8 @@
-package org.richard;
+package org.richard.utils;
 
 public class IntegerUtils {
 
-    static int safeParse(String value) {
+    public static int safeParse(String value) {
         if (value == null || value.isEmpty()) {
             return 0;
         }

@@ -48,7 +48,7 @@ public class ImageFileDownload {
                 InputStream inputStream = url.openStream();
                 OutputStream outputStream = new FileOutputStream(fullFilePath);
                 byte[] buffer = new byte[2048];
-                int length = 0;
+                int length;
                 while ((length = inputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, length);
                 }

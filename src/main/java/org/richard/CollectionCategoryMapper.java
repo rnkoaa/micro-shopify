@@ -19,7 +19,6 @@ public class CollectionCategoryMapper implements ResponseConverter<Category, Col
             .defaultFilterGroups(collection.defaultFilterGroupPrefix())
             .hero(map(collection.hero()))
             .sortOptions(map(collection.sortOptions()))
-
             .build();
     }
 

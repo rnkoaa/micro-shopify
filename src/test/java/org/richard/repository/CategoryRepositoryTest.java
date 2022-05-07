@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.richard.CollectionCategoryMapper;
 import org.richard.frankoak.category.Collection;
 import org.richard.product.Category;
 
@@ -20,7 +19,7 @@ class CategoryRepositoryTest extends BaseRepositoryTest {
         Collection collection = objectMapper.readValue(resourceAsStream, Collection.class);
         assertThat(collection).isNotNull();
 
-        Category category = new CollectionCategoryMapper().convert(collection);
+        Category category = collectionCategoryMapper.convert(collection);
         assertThat(category).isNotNull();
 
         var savedCategory = categoryRepository.save(category);
@@ -38,7 +37,7 @@ class CategoryRepositoryTest extends BaseRepositoryTest {
         Collection collection = objectMapper.readValue(resourceAsStream, Collection.class);
         assertThat(collection).isNotNull();
 
-        Category category = new CollectionCategoryMapper().convert(collection);
+        Category category = collectionCategoryMapper.convert(collection);
 
         var savedCategory = categoryRepository.save(category);
         assertThat(savedCategory).isNotNull();
@@ -61,7 +60,7 @@ class CategoryRepositoryTest extends BaseRepositoryTest {
         Collection collection = objectMapper.readValue(resourceAsStream, Collection.class);
         assertThat(collection).isNotNull();
 
-        Category category = new CollectionCategoryMapper().convert(collection);
+        Category category = collectionCategoryMapper.convert(collection);
 
         var savedCategory = categoryRepository.save(category);
         assertThat(savedCategory).isNotNull();
@@ -81,7 +80,7 @@ class CategoryRepositoryTest extends BaseRepositoryTest {
         Collection collection = objectMapper.readValue(resourceAsStream, Collection.class);
         assertThat(collection).isNotNull();
 
-        Category category = new CollectionCategoryMapper().convert(collection);
+        Category category = collectionCategoryMapper.convert(collection);
 
         var savedCategory = categoryRepository.save(category);
         assertThat(savedCategory).isNotNull();

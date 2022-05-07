@@ -7,7 +7,7 @@ import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
-import org.richard.frankoak.infra.jooq.RecordMapperProviderImpl;
+import org.richard.infra.jooq.RecordMapperProviderImpl;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteConfig.LockingMode;
 import org.sqlite.SQLiteConfig.SynchronousMode;

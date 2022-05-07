@@ -41,7 +41,6 @@ class ProductRepositoryTest extends BaseRepositoryTest {
         InputStream inputStream = readFileAsStream(path);
         ProductResponse productResponse = objectMapper.readValue(inputStream, ProductResponse.class);
         assertThat(productResponse).isNotNull();
-
         assertThat(productResponse).isNotNull();
 
         Product product = productResponseMapper.convert(productResponse);

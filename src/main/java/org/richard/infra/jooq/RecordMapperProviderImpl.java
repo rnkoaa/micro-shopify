@@ -1,4 +1,4 @@
-package org.richard.frankoak.infra.jooq;
+package org.richard.infra.jooq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ public class RecordMapperProviderImpl implements RecordMapperProvider {
         this.categoryRecordMapper = new CategoryRecordMapper(objectMapper);
         this.productRecordMapper = new ProductRecordMapper(objectMapper);
         this.imageRecordMapper = new ImageRecordMapper();
-        this.variantRecordMapper = new VariantRecordMapper();
+        this.variantRecordMapper = new VariantRecordMapper(objectMapper);
     }
 
     @Override
