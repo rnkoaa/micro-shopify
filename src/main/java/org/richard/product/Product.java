@@ -12,8 +12,9 @@ public record Product(
     String link,
     String vendor,
     String coverImage,
-    boolean available,
     String type,
+    String htmlDescription,
+    boolean available,
     List<String> tags,
     List<Image> images,
     List<Variant> variants,
@@ -46,6 +47,7 @@ public record Product(
         private String coverImage;
         private boolean available;
         private String type;
+        private String htmlDescription;
         private List<String> tags;
         private List<Image> images;
         private List<Variant> variants;
@@ -65,6 +67,7 @@ public record Product(
             this.coverImage = product.coverImage;
             this.available = product.available;
             this.type = product.type;
+            this.htmlDescription = product.htmlDescription;
             this.tags = product.tags;
             this.images = product.images;
             this.variants = product.variants;
@@ -84,6 +87,11 @@ public record Product(
 
         public Builder type(String type) {
             this.type = type;
+            return this;
+        }
+
+        public Builder htmlDescription(String htmlDescription) {
+            this.htmlDescription = htmlDescription;
             return this;
         }
 
@@ -157,8 +165,10 @@ public record Product(
 
         public Product build() {
             return new Product(id, title, price, link, vendor,
-                coverImage, available,
-                type, tags, images, variants, options, swatchColor,
+                coverImage, type,
+                htmlDescription,
+                available,
+                tags, images, variants, options, swatchColor,
                 createdAt, updatedAt);
         }
 

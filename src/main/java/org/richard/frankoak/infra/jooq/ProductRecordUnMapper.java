@@ -6,14 +6,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jooq.RecordUnmapper;
 import org.jooq.exception.MappingException;
 import org.microshopify.jooq.tables.records.ProductRecord;
+import org.richard.product.Image;
 import org.richard.product.Product;
 
-public class ProductRecordUnMapper implements RecordUnmapper<Product, ProductRecord> {
-
-    private final ObjectMapper objectMapper;
+public class ProductRecordUnMapper extends JooqJsonHandler implements RecordUnmapper<Product, ProductRecord> {
 
     public ProductRecordUnMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+        super(objectMapper);
     }
 
     @Override
@@ -33,11 +32,18 @@ public class ProductRecordUnMapper implements RecordUnmapper<Product, ProductRec
         record.setHandle(source.link());
         record.setProductType(source.type());
         record.setPrice(source.price());
+        record.setOptions(parseJSON(source.options()));
+        record.setSwatchColor(parseJSON(source.swatchColor()));
         record.setVendor(source.vendor());
         record.setAvailable(source.available() ? 1 : 0);
+        record.setHtmlDescription(source.htmlDescription());
+        record.setTags(parseJSON(source.tags()));
+
         record.setCreatedAt(Instant.now().toString());
         record.setUpdatedAt(Instant.now().toString());
-//        record.setFeaturedImage();
+
+        var featuredImage = new Image(source.coverImage(), "", null);
+        record.setFeaturedImage(parseJSON(featuredImage));
 
         return record;
     }

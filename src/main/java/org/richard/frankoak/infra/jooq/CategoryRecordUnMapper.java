@@ -1,20 +1,18 @@
 package org.richard.frankoak.infra.jooq;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import org.jetbrains.annotations.NotNull;
-import org.jooq.JSON;
 import org.jooq.RecordUnmapper;
 import org.jooq.exception.MappingException;
 import org.microshopify.jooq.tables.records.CategoryRecord;
 import org.richard.product.Category;
 
-public class CategoryRecordUnMapper implements RecordUnmapper<Category, CategoryRecord> {
+public class CategoryRecordUnMapper extends JooqJsonHandler implements RecordUnmapper<Category, CategoryRecord> {
 
-    private final ObjectMapper objectMapper;
-
-    public CategoryRecordUnMapper(ObjectMapper objectMapper) {this.objectMapper = objectMapper;}
+    public CategoryRecordUnMapper(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
 
     @Override
     public @NotNull CategoryRecord unmap(Category source) throws MappingException {
@@ -46,18 +44,4 @@ public class CategoryRecordUnMapper implements RecordUnmapper<Category, Category
         return record;
     }
 
-    public JSON parseJSON(Object value) {
-        return JSON.valueOf(safeJson(value));
-    }
-
-    String safeJson(Object value) {
-        if (value == null) {
-            return "";
-        }
-        try {
-            return objectMapper.writeValueAsString(value);
-        } catch (JsonProcessingException e) {
-            return "";
-        }
-    }
 }
