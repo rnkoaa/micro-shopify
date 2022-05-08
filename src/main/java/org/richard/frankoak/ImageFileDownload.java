@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.frankoak;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.richard.ProductImageInfo;
 
 public class ImageFileDownload {
 
@@ -15,7 +16,7 @@ public class ImageFileDownload {
 
     public ImageFileDownload(ExecutorService executorService) {this.executorService = executorService;}
 
-    boolean download(ProductImageInfo productImageInfo) {
+    public boolean download(ProductImageInfo productImageInfo) {
         String baseFilePath = "product-pages/images";
         File baseDir = new File(baseFilePath);
         if (!baseDir.exists() && !baseDir.mkdirs()) {

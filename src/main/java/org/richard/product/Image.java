@@ -1,6 +1,8 @@
 package org.richard.product;
 
 import java.time.Instant;
+import java.util.Objects;
+import org.richard.utils.Strings;
 
 public record Image(
     int id,
@@ -24,6 +26,35 @@ public record Image(
         return new Builder();
     }
 
+    public Image mergeWith(Image image) {
+        if (image == null) {
+            return this;
+        }
+        var builder = new Builder(this);
+        if (this.id != image.id && image.id > 0) {
+            builder.id(image.id);
+        }
+
+        if (this.position != image.position && image.position > 0) {
+            builder.position(image.position);
+        }
+
+        if (!Objects.equals(this.src, image.src) && !Strings.isNullOrEmpty(image.src)) {
+            builder.src(image.src);
+        }
+        if (!Objects.equals(this.alt, image.alt) && !Strings.isNullOrEmpty(image.alt)) {
+            builder.alt(image.alt);
+        }
+
+        if (this.size != image.size && (image.size != null && image.size.valid())) {
+            builder.imageSize(image.size);
+        }
+        if (this.product != image.product && (image.product != null)) {
+            builder.product(image.product);
+        }
+        return builder.build();
+    }
+
     public static class Builder {
 
         private int id;
@@ -34,6 +65,17 @@ public record Image(
         private ImageSize imageSize;
         private Instant createdAt;
         private Instant updatedAt;
+
+        public Builder(Image image) {
+            this.id = image.id;
+            this.src = image.src;
+            this.alt = image.alt;
+            this.position = image.position;
+            this.product = image.product;
+            this.imageSize = image.size;
+            this.createdAt = image.createdAt;
+            this.updatedAt = image.updatedAt;
+        }
 
         public Builder id(int id) {
             this.id = id;
@@ -65,7 +107,7 @@ public record Image(
             return this;
         }
 
-        public Builder imageSize(Product product) {
+        public Builder product(Product product) {
             this.product = product;
             return this;
         }

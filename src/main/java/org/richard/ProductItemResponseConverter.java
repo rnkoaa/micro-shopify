@@ -1,6 +1,5 @@
 package org.richard;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,14 +9,14 @@ import org.richard.frankoak.product.ProductItemResponse;
 import org.richard.frankoak.product.VariantItem;
 import org.richard.product.Image;
 import org.richard.product.ImageSize;
-import org.richard.product.Inventory;
 import org.richard.product.Product;
 import org.richard.product.ProductOption;
 import org.richard.product.Variant;
-import org.richard.product.Weight;
 import org.richard.utils.Strings;
 
 public class ProductItemResponseConverter implements ResponseConverter<Product, ProductItemResponse> {
+
+    private final VariantItemDetailResponseConverter itemDetailResponseConverter = new VariantItemDetailResponseConverter();
 
     @Override
     public Product convert(ProductItemResponse value) {
@@ -58,22 +57,7 @@ public class ProductItemResponseConverter implements ResponseConverter<Product, 
 
     private List<Variant> convertVariants(List<VariantItem> variants) {
         return variants.stream()
-            .map(variantItem -> Variant.builder()
-                .title(variantItem.title())
-                .price(variantItem.price())
-                .compareAtPrice(variantItem.compareAtPrice())
-                .position(variantItem.position())
-                .handle(variantItem.sku())
-                .barcode(variantItem.barcode())
-                .sku(variantItem.sku())
-                .fulfillmentService(variantItem.fulfillmentService())
-                .requiresShipping(variantItem.requiresShipping())
-                .inventory(new Inventory(variantItem.inventoryManagement(), 0))
-                .weight(new Weight(variantItem.weight(), variantItem.weightUnit()))
-                .taxable(variantItem.taxable())
-                .taxCode(variantItem.taxCode())
-                .build()
-            )
+            .map(itemDetailResponseConverter::convert)
             .toList();
     }
 

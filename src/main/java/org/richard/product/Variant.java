@@ -1,6 +1,8 @@
 package org.richard.product;
 
 import java.time.Instant;
+import java.util.Objects;
+import org.richard.utils.Strings;
 
 public record Variant(
     int id,
@@ -43,6 +45,71 @@ public record Variant(
     public Variant withImage(Image image) {
         return new Builder(this)
             .image(image)
+            .build();
+    }
+
+    public Variant mergeWith(Variant variant) {
+        var builder = new Builder(this);
+        if (this.id != variant.id && variant.id > 0) {
+            builder.id(variant.id);
+        }
+        if (this.position != variant.position && variant.position > 0) {
+            builder.position(variant.position);
+        }
+        if (!Objects.equals(this.title, variant.title) && !Strings.isNullOrEmpty(variant.title)) {
+            builder.title(variant.title);
+        }
+        if (!Objects.equals(this.price, variant.price) && !Strings.isNullOrEmpty(variant.price)) {
+            builder.price(variant.price);
+        }
+        if (!Objects.equals(this.compareAtPrice, variant.compareAtPrice) && !Strings.isNullOrEmpty(
+            variant.compareAtPrice)) {
+            builder.compareAtPrice(variant.compareAtPrice);
+        }
+        if (!Objects.equals(this.sku, variant.sku) && !Strings.isNullOrEmpty(variant.sku)) {
+            builder.sku(variant.sku);
+        }
+        if (!Objects.equals(this.barcode, variant.barcode) && !Strings.isNullOrEmpty(variant.barcode)) {
+            builder.barcode(variant.barcode);
+        }
+        if (!Objects.equals(this.handle, variant.handle) && !Strings.isNullOrEmpty(variant.handle)) {
+            builder.handle(variant.handle);
+        }
+        if (!Objects.equals(this.taxCode, variant.taxCode) && !Strings.isNullOrEmpty(variant.taxCode)) {
+            builder.taxCode(variant.taxCode);
+        }
+        if (!Objects.equals(this.fulfillmentService, variant.fulfillmentService) && !Strings.isNullOrEmpty(
+            variant.fulfillmentService)) {
+            builder.fulfillmentService(variant.fulfillmentService);
+        }
+        if (product == null && variant.product != null) {
+            builder.product(variant.product);
+        }
+        builder.taxable(taxable || variant.taxable);
+        builder.available(available || variant.available);
+        builder.requiresShipping(requiresShipping || variant.requiresShipping);
+
+        if (weight != null) {
+            builder.weight(weight.mergeWith(variant.weight));
+        } else {
+            builder.weight(variant.weight);
+        }
+        if (inventory != null) {
+            builder.inventory(inventory.mergeWith(variant.inventory));
+        } else {
+            builder.inventory(variant.inventory);
+        }
+        if (image != null) {
+            builder.image(image.mergeWith(variant.image));
+        } else {
+            builder.image(variant.image);
+        }
+
+        return builder.build();
+    }
+
+    public Variant withHandle(String variantHandle) {
+        return new Builder(this).handle(variantHandle)
             .build();
     }
 

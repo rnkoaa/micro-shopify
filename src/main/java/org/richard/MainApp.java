@@ -25,6 +25,7 @@ import java.util.stream.IntStream;
 import org.jooq.DSLContext;
 import org.richard.config.DatabaseConfig;
 import org.richard.config.HttpClientFactory;
+import org.richard.frankoak.ImageFileDownload;
 import org.richard.frankoak.ProductDetailDownloader;
 import org.richard.frankoak.category.CollectionResponse;
 import org.richard.frankoak.fs.CategoryMenuParser;
@@ -46,29 +47,37 @@ public class MainApp {
     public static void main(String[] args) throws IOException, InterruptedException {
         String dbUrl = "jdbc:sqlite:src/main/resources/db/micro-shopify.db";
         DSLContext dslContext = new DatabaseConfig().dslContext(dbUrl);
-        final CollectionCategoryMapper collectionCategoryMapper = new CollectionCategoryMapper();
-        final ProductResponseMapper productResponseMapper = new ProductResponseMapper();
+//        final CollectionCategoryMapper collectionCategoryMapper = new CollectionCategoryMapper();
+        final ProductItemResponseConverter productItemResponseConverter = new ProductItemResponseConverter();
+//        final ProductResponseMapper productResponseMapper = new ProductResponseMapper();
+//
+//        final CategoryRepository categoryRepository = new CategoryRepository(dslContext, objectMapper);
+//        final ProductRepository productRepository = new ProductRepository(dslContext, objectMapper);
+//
+//        final CategoryProductRepository categoryProductRepository = new CategoryProductRepository(dslContext,
+//            productRepository, categoryRepository);
+//
+//        Set<Category> categories = CategoryMenuParser.parseMenu();
+//
+//        categoryRepository.saveTree(categories);
+//
+//        Set<CollectionResponse> collectionResponses = CategoryMenuParser.readCategoryFiles(objectMapper);
+//        List<Category> savedCategories = collectionResponses.stream()
+//            .map(c -> {
+//                Category category = collectionCategoryMapper.convert(c.collection());
+//                List<Product> products = c.products().stream()
+//                    .map(productResponseMapper::convert)
+//                    .toList();
+//                return categoryProductRepository.save(category, products);
+//            })
+//            .toList();
 
-        final CategoryRepository categoryRepository = new CategoryRepository(dslContext, objectMapper);
-        final ProductRepository productRepository = new ProductRepository(dslContext, objectMapper);
+        Set<Product> productDetails = readProducts()
+            .stream()
+            .map(productItemResponseConverter::convert)
+            .collect(Collectors.toSet());
 
-        final CategoryProductRepository categoryProductRepository = new CategoryProductRepository(dslContext,
-            productRepository, categoryRepository);
-
-        Set<Category> categories = CategoryMenuParser.parseMenu();
-
-        categoryRepository.saveTree(categories);
-
-        Set<CollectionResponse> collectionResponses = CategoryMenuParser.readCategoryFiles(objectMapper);
-        List<Category> savedCategories = collectionResponses.stream()
-            .map(c -> {
-                Category category = collectionCategoryMapper.convert(c.collection());
-                List<Product> products = c.products().stream()
-                    .map(productResponseMapper::convert)
-                    .toList();
-                return categoryProductRepository.save(category, products);
-            })
-            .toList();
+        System.out.println(productDetails.size());
 
 //        String categoryPaths = "category-pages";
 //        File file = new File(categoryPaths);
@@ -158,7 +167,6 @@ public class MainApp {
     }
 
     private void getCategories(HttpClient httpClient, List<Category> categories) {
-        System.out.println(categories.size());
         IntStream.range(0, categories.size())
             .mapToObj(index -> categories.get(index).withId(index))
             .filter(p -> p.url() != null && !p.url().isEmpty())

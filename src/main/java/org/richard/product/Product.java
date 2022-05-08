@@ -3,7 +3,11 @@ package org.richard.product;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import org.richard.utils.Strings;
 
 public record Product(
     int id,
@@ -52,6 +56,68 @@ public record Product(
     public Product withVariants(List<Variant> savedVariants) {
         return toBuilder().variants(savedVariants)
             .build();
+    }
+
+    public Product mergeWith(Product product) {
+        var builder = toBuilder();
+        if (!Objects.equals(this.link, product.link) && !Strings.isNullOrEmpty(product.link)) {
+            builder.link(product.link);
+        }
+        if (!Objects.equals(this.title, product.title) && !Strings.isNullOrEmpty(product.title)) {
+            builder.title(product.title);
+        }
+        if (!Objects.equals(this.price, product.price) && !Strings.isNullOrEmpty(product.price)) {
+            builder.price(product.price);
+        }
+        if (!Objects.equals(this.htmlDescription, product.htmlDescription) && !Strings.isNullOrEmpty(
+            product.htmlDescription)) {
+            builder.htmlDescription(product.htmlDescription);
+        }
+        if (!Objects.equals(this.type, product.type) && !Strings.isNullOrEmpty(product.type)) {
+            builder.type(product.type);
+        }
+        if (!Objects.equals(this.coverImage, product.coverImage) && !Strings.isNullOrEmpty(product.coverImage)) {
+            builder.coverImage(product.coverImage);
+        }
+        if (!Objects.equals(this.swatchColor, product.swatchColor) && product.swatchColor != null) {
+            builder.swatchColor(product.swatchColor);
+        }
+
+        builder.images(mergeImages(this.images, product.images));
+        builder.variants(mergeVariants(this.variants, product.variants));
+
+        if (product.available && !this.available) {
+            builder.available(true);
+        }
+        return builder.build();
+    }
+
+    private List<Variant> mergeVariants(List<Variant> variants, List<Variant> toMerge) {
+        if (toMerge == null || toMerge.isEmpty()) {
+            return variants;
+        }
+        Map<String, Variant> variantMap = toMerge
+            .stream()
+            .collect(Collectors.toMap(Variant::handle, it -> it));
+
+        return variants.stream()
+            .map(variant -> variant.mergeWith(variantMap.get(variant.title())))
+            .distinct()
+            .toList();
+    }
+
+    private List<Image> mergeImages(List<Image> images, List<Image> toMerge) {
+        if (toMerge == null || toMerge.isEmpty()) {
+            return images;
+        }
+        Map<String, Image> imageMap = toMerge
+            .stream()
+            .collect(Collectors.toMap(Image::src, it -> it));
+
+        return images.stream()
+            .map(image -> image.mergeWith(imageMap.get(image.src())))
+            .distinct()
+            .toList();
     }
 
     public static class Builder {
