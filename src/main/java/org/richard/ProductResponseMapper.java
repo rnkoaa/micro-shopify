@@ -105,7 +105,7 @@ public class ProductResponseMapper implements ResponseConverter<Product, Product
     }
 
     private Inventory createInventory(int inventoryQuantity) {
-        return new Inventory(inventoryQuantity);
+        return new Inventory("", inventoryQuantity);
     }
 
     List<Image> convertImages(List<ProductImage> productImages) {

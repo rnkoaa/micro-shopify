@@ -10,7 +10,6 @@ public class ProductItemResponseAssert extends AbstractAssert<ProductItemRespons
         super(actual, ProductItemResponseAssert.class);
     }
 
-
     public ProductItemResponseAssert hasTitle(String title) {
         isNotNull();
         if (!actual.title().equals(title)) {
@@ -26,14 +25,6 @@ public class ProductItemResponseAssert extends AbstractAssert<ProductItemRespons
         }
         return this;
     }
-
-//    public ProductItemResponseAssert hasPrice(String price) {
-//        isNotNull();
-//        if (!actual.().equals(price)) {
-//            failWithMessage("Expected product response to have price %s but was %s", price, actual.price());
-//        }
-//        return this;
-//    }
 
 //    public ProductItemResponseAssert hasFeaturedImage(String featuredImage) {
 //        isNotNull();
@@ -51,14 +42,6 @@ public class ProductItemResponseAssert extends AbstractAssert<ProductItemRespons
         }
         return this;
     }
-
-//    public ProductItemResponseAssert isAvailable() {
-//        isNotNull();
-//        if (!actual.available()) {
-//            failWithMessage("Expected product response to be available but was not");
-//        }
-//        return this;
-//    }
 
     public ProductItemResponseAssert hasVariantSize(int size) {
         isNotNull();
@@ -84,6 +67,28 @@ public class ProductItemResponseAssert extends AbstractAssert<ProductItemRespons
         if (actual.images().size() != size) {
             failWithMessage("Expected product response to have images with size %d but was %d", size,
                 actual.images().size());
+        }
+        return this;
+    }
+
+    public ProductItemResponseAssert hasOptionsSize(int optionsSize) {
+        isNotNull();
+        if (actual.options() == null) {
+            failWithMessage("Expected product response to have options with size %d but was null", optionsSize);
+            return this;
+        }
+
+        if (actual.images().size() != optionsSize) {
+            failWithMessage("Expected product response to have options with size %d but was %d", optionsSize,
+                actual.images().size());
+        }
+        return this;
+    }
+
+    public ProductItemResponseAssert hasVendor(String vendor) {
+        isNotNull();
+        if (!actual.vendor().equals(vendor)) {
+            failWithMessage("Expected product response to have vendor '%s' but was '%s'", vendor, actual.vendor());
         }
         return this;
     }

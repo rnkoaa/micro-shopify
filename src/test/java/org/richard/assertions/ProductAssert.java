@@ -1,5 +1,6 @@
 package org.richard.assertions;
 
+import java.util.Objects;
 import org.assertj.core.api.AbstractAssert;
 import org.richard.product.Product;
 
@@ -16,6 +17,7 @@ public class ProductAssert extends AbstractAssert<ProductAssert, Product> {
         }
         return this;
     }
+
     public ProductAssert hasId(int id) {
         isNotNull();
         if (actual.id() != id) {
@@ -96,7 +98,31 @@ public class ProductAssert extends AbstractAssert<ProductAssert, Product> {
     public ProductAssert hasSameIdAs(Product product) {
         isNotNull();
         if (actual.id() != product.id()) {
-            failWithMessage("Expected product to have id %d but was %d", product.id(),  actual.id());
+            failWithMessage("Expected product to have id %d but was %d", product.id(), actual.id());
+            return this;
+        }
+
+        return this;
+    }
+
+    public ProductAssert hasOptionsSize(int size) {
+        isNotNull();
+        if (actual.options() == null) {
+            failWithMessage("Expected product to have options with size %d but was null", size);
+            return this;
+        }
+
+        if (actual.options().size() != size) {
+            failWithMessage("Expected product to have options with size %d but was %d", size,
+                actual.images().size());
+        }
+        return this;
+    }
+
+    public ProductAssert hasHtmlDescription(String htmDescription) {
+        isNotNull();
+        if (!Objects.equals(actual.htmlDescription(), htmDescription)) {
+            failWithMessage("Expected product to have html description but was not equal");
             return this;
         }
 
