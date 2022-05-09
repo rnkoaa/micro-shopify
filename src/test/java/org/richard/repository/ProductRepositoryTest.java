@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.richard.ProductResponseMapper;
+import org.richard.frankoak.converter.ProductResponseMapper;
 import org.richard.assertions.MyAssertions;
 import org.richard.frankoak.category.ProductResponse;
 import org.richard.product.Product;

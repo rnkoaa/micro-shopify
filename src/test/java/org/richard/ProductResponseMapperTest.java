@@ -9,6 +9,7 @@ import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import org.richard.assertions.MyAssertions;
 import org.richard.frankoak.category.ProductResponse;
+import org.richard.frankoak.converter.ProductResponseMapper;
 import org.richard.product.Product;
 
 class ProductResponseMapperTest {

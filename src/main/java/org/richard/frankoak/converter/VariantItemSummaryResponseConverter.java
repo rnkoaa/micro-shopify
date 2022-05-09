@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.frankoak.converter;
 
 import java.time.Instant;
 import org.richard.frankoak.category.ProductVariant;

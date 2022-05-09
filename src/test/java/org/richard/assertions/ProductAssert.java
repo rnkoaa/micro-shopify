@@ -34,6 +34,14 @@ public class ProductAssert extends AbstractAssert<ProductAssert, Product> {
         return this;
     }
 
+    public ProductAssert hasHandle(String handle) {
+        isNotNull();
+        if (!actual.link().equals(handle)) {
+            failWithMessage("Expected product to have handle %s but was %s", handle, actual.link());
+        }
+        return this;
+    }
+
     public ProductAssert hasPrice(String price) {
         isNotNull();
         if (!actual.price().equals(price)) {

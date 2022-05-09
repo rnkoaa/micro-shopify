@@ -27,16 +27,13 @@ import org.richard.config.DatabaseConfig;
 import org.richard.config.HttpClientFactory;
 import org.richard.frankoak.ImageFileDownload;
 import org.richard.frankoak.ProductDetailDownloader;
-import org.richard.frankoak.category.CollectionResponse;
+import org.richard.frankoak.converter.ProductItemResponseConverter;
 import org.richard.frankoak.fs.CategoryMenuParser;
 import org.richard.frankoak.product.ImageItem;
 import org.richard.frankoak.product.ProductDetailResponse;
 import org.richard.frankoak.product.ProductItemResponse;
 import org.richard.product.Category;
 import org.richard.product.Product;
-import org.richard.repository.CategoryProductRepository;
-import org.richard.repository.CategoryRepository;
-import org.richard.repository.ProductRepository;
 
 public class MainApp {
 

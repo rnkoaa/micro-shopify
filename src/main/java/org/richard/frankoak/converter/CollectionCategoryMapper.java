@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.frankoak.converter;
 
 import java.util.List;
 import java.util.Map;

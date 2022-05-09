@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import org.richard.assertions.MyAssertions;
+import org.richard.frankoak.converter.ProductItemResponseConverter;
 import org.richard.frankoak.product.ProductDetailResponse;
 import org.richard.frankoak.product.ProductItemResponse;
 import org.richard.product.Product;
@@ -35,7 +36,6 @@ class ProductItemResponseConverterTest {
             .hasVariantSize(8)
             .hasImagesSize(7)
             .hasOptionsSize(7)
-//            .hasVendor("Frank and Oak")
         ;
 //
         Product product = productResponseMapper.convert(productItemResponse);

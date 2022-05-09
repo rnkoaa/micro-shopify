@@ -1,6 +1,5 @@
-package org.richard;
+package org.richard.frankoak.converter;
 
-import org.richard.ResponseConverter;
 import org.richard.frankoak.product.VariantItem;
 import org.richard.product.Inventory;
 import org.richard.product.Variant;

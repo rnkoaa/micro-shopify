@@ -79,7 +79,7 @@ public record Product(
         if (!Objects.equals(this.coverImage, product.coverImage) && !Strings.isNullOrEmpty(product.coverImage)) {
             builder.coverImage(product.coverImage);
         }
-        if (!Objects.equals(this.swatchColor, product.swatchColor) && product.swatchColor != null) {
+        if (!Objects.equals(this.swatchColor, product.swatchColor) && (product.swatchColor != null && product.swatchColor.valid())) {
             builder.swatchColor(product.swatchColor);
         }
 
@@ -98,7 +98,7 @@ public record Product(
         }
         Map<String, Variant> variantMap = toMerge
             .stream()
-            .collect(Collectors.toMap(Variant::handle, it -> it));
+            .collect(Collectors.toMap(Variant::title, it -> it));
 
         return variants.stream()
             .map(variant -> variant.mergeWith(variantMap.get(variant.title())))
@@ -148,11 +148,13 @@ public record Product(
             this.price = product.price;
             this.coverImage = product.coverImage;
             this.available = product.available;
+            this.swatchColor = product.swatchColor;
             this.type = product.type;
             this.htmlDescription = product.htmlDescription;
             this.tags = product.tags;
             this.images = product.images;
             this.variants = product.variants;
+            this.options = product.options;
             this.createdAt = product.createdAt;
             this.updatedAt = product.updatedAt;
         }

@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.frankoak.converter;
 
 public interface ResponseConverter<T, U> {
 

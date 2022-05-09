@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.frankoak.converter;
 
 import java.util.HashSet;
 import java.util.List;

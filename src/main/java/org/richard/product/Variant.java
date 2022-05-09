@@ -49,6 +49,9 @@ public record Variant(
     }
 
     public Variant mergeWith(Variant variant) {
+        if(variant == null){
+            return this;
+        }
         var builder = new Builder(this);
         if (this.id != variant.id && variant.id > 0) {
             builder.id(variant.id);

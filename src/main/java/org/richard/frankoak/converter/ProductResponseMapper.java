@@ -1,4 +1,4 @@
-package org.richard;
+package org.richard.frankoak.converter;
 
 import static org.richard.utils.IntegerUtils.safeParse;
 

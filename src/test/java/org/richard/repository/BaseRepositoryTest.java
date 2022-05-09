@@ -7,8 +7,8 @@ import java.io.InputStream;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.richard.CollectionCategoryMapper;
-import org.richard.ProductResponseMapper;
+import org.richard.frankoak.converter.CollectionCategoryMapper;
+import org.richard.frankoak.converter.ProductResponseMapper;
 import org.richard.config.DatabaseConfig;
 import org.richard.config.ObjectMapperFactory;
 
