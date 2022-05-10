@@ -59,6 +59,10 @@ class ProductRepositoryTest extends BaseRepositoryTest {
             .hasTitle(savedProduct.title())
             .hasPrice(product.price());
 
+        assertThat(foundProduct.images()).isNotNull().hasSize(8);
+        assertThat(foundProduct.variants()).isNotNull().hasSize(8);
+
+
         System.out.println(objectMapper.writeValueAsString(foundProduct));
     }
 

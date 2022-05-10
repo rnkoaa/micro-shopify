@@ -4,18 +4,28 @@ import static org.microshopify.jooq.tables.Image.IMAGE;
 import static org.microshopify.jooq.tables.Product.PRODUCT;
 import static org.microshopify.jooq.tables.Variant.VARIANT;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
+import org.jooq.Record8;
+import org.jooq.RecordMapper;
+import org.jooq.Records;
 import org.jooq.exception.DataAccessException;
+import org.jooq.impl.DSL;
+import org.microshopify.jooq.tables.records.ProductRecord;
 import org.richard.infra.jooq.ImageRecordUnMapper;
+import org.richard.infra.jooq.ProductRecordMapper;
 import org.richard.infra.jooq.ProductRecordUnMapper;
 import org.richard.infra.jooq.VariantRecordUnMapper;
 import org.richard.product.Image;
+import org.richard.product.ImageSize;
 import org.richard.product.Product;
 import org.richard.product.Variant;
+import org.richard.utils.Strings;
 
 public class ProductRepository extends JooqBaseRepository implements Repository<Product, Integer>,
     HasHandle<Product> {
@@ -24,12 +34,14 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
     static String UNIQUE_CONSTRAINT_EXCEPTION = "SQLITE_CONSTRAINT_UNIQUE";
 
     private final ProductRecordUnMapper productRecordUnMapper;
+    private final ProductRecordMapper productRecordMapper;
     private final ImageRecordUnMapper imageRecordUnMapper;
     private final VariantRecordUnMapper variantRecordUnMapper;
 
     public ProductRepository(DSLContext dsl, ObjectMapper objectMapper) {
         super(dsl, objectMapper);
         this.productRecordUnMapper = new ProductRecordUnMapper(objectMapper);
+        this.productRecordMapper = new ProductRecordMapper(objectMapper);
         this.imageRecordUnMapper = new ImageRecordUnMapper();
         this.variantRecordUnMapper = new VariantRecordUnMapper(objectMapper);
     }
@@ -43,9 +55,55 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
     }
 
     @Override
+    // https://stackoverflow.com/questions/66742834/update-a-column-when-value-is-not-null-jooq
+//    https://blog.jooq.org/how-to-use-jooqs-updatablerecord-for-crud-to-apply-a-delta/
     public boolean update(Product value) {
+        getDsl().transactionResult(trx -> {
+            DSLContext dsl = trx.dsl();
+            ProductRecord productRecord = dsl.selectFrom(PRODUCT)
+                .where(PRODUCT.HANDLE.eq(value.link()))
+                .fetchOne();
+            if (productRecord == null) {
+                return false;
+            }
+            productRecord.setUpdatedAt(Instant.now().toString());
+            productRecord.setTags(parseJSON(value.tags()));
+            productRecord.setTitle(value.title());
+            productRecord.setAvailable((value.available()) ? 1 : 0);
+            if (Strings.isNotNullOrEmpty(value.price())) {
+                productRecord.setPrice(value.price());
+            }
+            if (Strings.isNotNullOrEmpty(value.htmlDescription())) {
+                productRecord.setHtmlDescription(value.htmlDescription());
+            }
+            if (value.swatchColor() != null) {
+                productRecord.setSwatchColor(parseJSON(value.swatchColor()));
+            }
+            if (Strings.isNotNullOrEmpty(value.vendor())) {
+                productRecord.setVendor(value.vendor());
+            }
+
+            return true;
+        });
         return false;
     }
+    /*
+      return dsl.select(
+                PRODUCT.ID,
+                PRODUCT.NAME,
+                PRODUCT.DESCRIPTION,
+                PRODUCT.PRICE,
+                DSL.multiset(
+                        dsl.select(CATEGORY.ID, CATEGORY.NAME)
+                            .from(CATEGORY)
+                            .join(PRODUCT_CATEGORY)
+                            .on(PRODUCT_CATEGORY.CATEGORY_ID.eq(CATEGORY.ID))
+                            .where(PRODUCT_CATEGORY.PRODUCT_ID.eq(PRODUCT.ID))
+                    ).as("categories")
+                    .convertFrom(r -> r.map(rec -> new Category(rec.value1(), rec.value2())))
+            )
+            .from(PRODUCT);
+     */
 
     @Override
     public Product save(Product product) {
@@ -167,10 +225,100 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
 
     @Override
     public Optional<Product> findById(Integer id) {
-        Product product = getDsl().selectFrom(PRODUCT)
+        Product product = getDsl().select(
+                PRODUCT.ID,
+                PRODUCT.TITLE,
+                PRODUCT.HANDLE,
+                PRODUCT.PRODUCT_TYPE,
+                PRODUCT.PRICE,
+                PRODUCT.TAGS,
+                PRODUCT.VENDOR,
+                PRODUCT.FEATURED_IMAGE,
+                PRODUCT.HTML_DESCRIPTION,
+                PRODUCT.AVAILABLE,
+                PRODUCT.SWATCH_COLOR,
+                PRODUCT.CREATED_AT,
+                PRODUCT.UPDATED_AT,
+                PRODUCT.OPTIONS,
+                DSL.multiset(
+                        getDsl().select(IMAGE.ID,
+                                IMAGE.SRC,
+                                IMAGE.POSITION,
+                                IMAGE.ALT,
+                                IMAGE.WIDTH, IMAGE.HEIGHT,
+                                IMAGE.CREATED_AT,
+                                IMAGE.UPDATED_AT
+                            )
+                            .from(IMAGE)
+                            .join(PRODUCT)
+                            .on(IMAGE.PRODUCT_ID.eq(PRODUCT.ID))
+                            .where(IMAGE.PRODUCT_ID.eq(PRODUCT.ID))
+                    ).as("images")
+                    .convertFrom(r -> r.map(mapImageRecord())),
+                DSL.multiset(
+                        getDsl().select(
+                                VARIANT.ID,
+                                VARIANT.TITLE,
+                                VARIANT.PRICE,
+                                VARIANT.COMPARE_AT_PRICE,
+                                VARIANT.POSITION,
+                                VARIANT.SKU,
+                                VARIANT.HANDLE,
+                                VARIANT.INVENTORY,
+                                VARIANT.AVAILABLE,
+                                VARIANT.TAX_CODE,
+                                VARIANT.TAXABLE,
+                                VARIANT.BARCODE,
+                                VARIANT.WEIGHT,
+                                VARIANT.FULFILLMENT_SERVICE,
+                                VARIANT.REQUIRES_SHIPPING,
+                                VARIANT.CREATED_AT,
+                                VARIANT.UPDATED_AT
+                            )
+                            .from(VARIANT)
+                            .join(PRODUCT)
+                            .on(VARIANT.PRODUCT_ID.eq(PRODUCT.ID))
+                            .where(VARIANT.PRODUCT_ID.eq(PRODUCT.ID))
+                    ).as("variants")
+                    .convertFrom(r -> r.map(rec -> Variant
+                        .builder()
+                        .id(safeInt(rec.value1()))
+                        .title(rec.value2())
+                        .build()))
+            )
+            .from(PRODUCT)
             .where(PRODUCT.ID.eq(id))
-            .fetchOneInto(Product.class);
+            .fetchOne(f -> Product.builder()
+                .id(f.value1())
+                .title(f.value2())
+                .link(f.value3())
+                .type(f.value4())
+                .price(f.value5())
+                .tags(deserialize(f.value6().data(), new TypeReference<>() {}))
+                .vendor(f.value7())
+                .coverImage(productRecordMapper.extractCoverImage(f.value8()))
+                .htmlDescription(f.value9())
+                .available(productRecordMapper.mapToBoolean(f.value10()))
+                .swatchColor(productRecordMapper.extractSwatchColor(f.value11()))
+                .createdAt(productRecordMapper.mapToInstant(f.value12()))
+                .updatedAt(productRecordMapper.mapToInstant(f.value13()))
+                .options(productRecordMapper.extractOptions(f.value14()))
+                .images(f.value15())
+                .variants(f.value16())
+                .build());
         return Optional.ofNullable(product);
+    }
+
+    @NotNull
+    private RecordMapper<Record8<Integer, String, Integer, String, Integer, Integer, String, String>, Image> mapImageRecord() {
+        return rec -> Image.builder().id(safeInt(rec.value1()))
+            .position(safeInt(rec.value3()))
+            .src(rec.value2())
+            .alt(rec.value4())
+            .imageSize(createImageSize(rec.value5(), rec.value6()))
+            .createdAt(mapToInstant(rec.value7()))
+            .updatedAt(mapToInstant(rec.value8()))
+            .build();
     }
 
     @Override
@@ -235,5 +383,9 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
                 .execute() > 0;
         }
         return false;
+    }
+
+    private ImageSize createImageSize(Integer width, Integer height) {
+        return new ImageSize(safeInt(width), safeInt(height));
     }
 }

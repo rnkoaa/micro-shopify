@@ -1,4 +1,5 @@
 import nu.studer.gradle.jooq.JooqGenerate
+import org.flywaydb.gradle.task.FlywayMigrateTask
 
 plugins {
     id("nu.studer.jooq") version "7.1.1"
@@ -44,7 +45,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
 
     jooqGenerator("org.xerial:sqlite-jdbc:3.36.0.3")
-    implementation("org.flywaydb:flyway-core:8.5.9")
+    implementation("org.flywaydb:flyway-core:8.5.10")
 
     implementation("org.jooq:jooq:3.16.6")
     jooqGenerator("org.jooq:jooq-meta-extensions:3.16.6")
@@ -118,7 +119,7 @@ tasks.named<JooqGenerate>("generateJooq") {
     })
 }
 
-tasks.register<org.flywaydb.gradle.task.FlywayMigrateTask>("flywayMigrateTest") {
+tasks.register<FlywayMigrateTask>("flywayMigrateTest") {
     description = "generate a new Db for testing"
     driver = "org.sqlite.JDBC"
     mixed = true // suppress 'Detected transactional and non-transactional statements within the same migration
@@ -131,3 +132,5 @@ tasks.register<org.flywaydb.gradle.task.FlywayMigrateTask>("flywayMigrateTest") 
 //    user = 'myUsr2'
 //    password = 'mySecretPwd2'
 //}
+
+//https://codersee.com/jacoco-with-spring-boot-gradle-and-kotlin/

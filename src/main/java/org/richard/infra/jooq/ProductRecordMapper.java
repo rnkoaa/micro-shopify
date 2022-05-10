@@ -29,6 +29,8 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
             return null;
         }
 
+//        Object  = record.get("images");
+
         var productBuilder = Product.builder()
             .id(record.getId())
             .title(record.getTitle())
@@ -41,14 +43,14 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
             .createdAt(Instant.parse(record.getCreatedAt()))
             .updatedAt(Instant.parse(record.getUpdatedAt()))
             .tags(extractTags(record))
-            .options(extractOptions(record))
+            .options(extractOptions(record.getOptions()))
             .coverImage(extractCoverImage(record.getFeaturedImage()))
             .swatchColor(extractSwatchColor(record.getSwatchColor()));
 
         return productBuilder.build();
     }
 
-    private String extractCoverImage(JSON featuredImage) {
+    public String extractCoverImage(JSON featuredImage) {
         if (featuredImage == null) {
             return "";
         }
@@ -64,7 +66,7 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
         return image.src();
     }
 
-    private SwatchColor extractSwatchColor(JSON swatchColor) {
+    public SwatchColor extractSwatchColor(JSON swatchColor) {
         if (swatchColor == null) {
             return null;
         }
@@ -76,7 +78,7 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
         return deserialize(swatchColorData, SwatchColor.class);
     }
 
-    private List<String> extractTags(ProductRecord record) {
+    public List<String> extractTags(ProductRecord record) {
         JSON tags = record.getTags();
         if (tags != null) {
             String data = tags.data();
@@ -88,8 +90,7 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
         return List.of();
     }
 
-    private Set<ProductOption> extractOptions(ProductRecord record) {
-        JSON options = record.getOptions();
+    public Set<ProductOption> extractOptions(JSON options) {
         if (options != null) {
             String data = options.data();
             if (Strings.isNotNullOrEmpty(data)) {
@@ -99,5 +100,16 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
             }
         }
         return Set.of();
+    }
+
+    public boolean mapToBoolean(Integer value) {
+        return value != null && value > 0;
+    }
+
+    public Instant mapToInstant(String value) {
+        if (Strings.isNullOrEmpty(value)) {
+            return Instant.now();
+        }
+        return Instant.parse(value);
     }
 }

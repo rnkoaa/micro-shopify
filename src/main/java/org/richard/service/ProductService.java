@@ -15,9 +15,9 @@ public class ProductService {
     public Product saveOrUpdate(Product product) {
         Optional<Product> productByHandle = productRepository.findByHandle(product.link());
         return productByHandle.map(foundProduct -> {
-           var toSave = foundProduct.mergeWith(product);
-           // https://stackoverflow.com/questions/66742834/update-a-column-when-value-is-not-null-jooq
-            return toSave;
+            var toSave = foundProduct.mergeWith(product);
+            var updated = productRepository.update(toSave);
+            return (updated) ? toSave : product;
         }).orElseGet(() -> productRepository.save(product));
 
     }
