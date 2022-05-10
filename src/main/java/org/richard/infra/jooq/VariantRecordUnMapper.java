@@ -26,8 +26,20 @@ public class VariantRecordUnMapper extends JooqJsonHandler implements RecordUnma
         variantRecord.setProductId(source.product().id());
         variantRecord.setHandle(source.handle());
 
+        if(source.barcode() != null){
+            variantRecord.setBarcode(source.barcode());
+        }
+
+        if(source.barcode() != null){
+            variantRecord.setBarcode(source.barcode());
+        }
+
         if (source.inventory() != null) {
             variantRecord.setInventory(parseJSON(source.inventory()));
+        }
+
+        if(source.weight() != null){
+            variantRecord.setWeight(parseJSON(source.weight()));
         }
 
         if (source.image() != null && source.image().id() > 0) {

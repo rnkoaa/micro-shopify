@@ -3,10 +3,12 @@ package org.richard.infra.jooq;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.jooq.JSON;
+import org.richard.utils.Strings;
 
 public abstract class JooqJsonHandler {
 
@@ -58,5 +60,20 @@ public abstract class JooqJsonHandler {
         } catch (JsonProcessingException e) {
             return null;
         }
+    }
+
+    public boolean mapToBoolean(Integer value) {
+        return value != null && value > 0;
+    }
+
+    public Instant mapToInstant(String value) {
+        if (Strings.isNullOrEmpty(value)) {
+            return Instant.now();
+        }
+        return Instant.parse(value);
+    }
+
+    public int safeInt(Integer value){
+        return value == null || value <= 0 ? 0 : value;
     }
 }

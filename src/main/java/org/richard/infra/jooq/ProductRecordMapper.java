@@ -19,6 +19,9 @@ import org.richard.product.SwatchColor;
 
 public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper<ProductRecord, Product> {
 
+    TypeReference<Set<String>> tagsTypeReference = new TypeReference<>() {};
+    private final TypeReference<List<ProductOption>> productOptionsTypeReference = new TypeReference<>() {};
+
     public ProductRecordMapper(ObjectMapper objectMapper) {
         super(objectMapper);
     }
@@ -83,7 +86,6 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
         if (tags != null) {
             String data = tags.data();
             if (Strings.isNotNullOrEmpty(data)) {
-                TypeReference<Set<String>> tagsTypeReference = new TypeReference<>() {};
                 return new ArrayList<>(deserializeStringSet(data, tagsTypeReference));
             }
         }
@@ -94,8 +96,7 @@ public class ProductRecordMapper extends JooqJsonHandler implements RecordMapper
         if (options != null) {
             String data = options.data();
             if (Strings.isNotNullOrEmpty(data)) {
-                TypeReference<List<ProductOption>> tagsTypeReference = new TypeReference<>() {};
-                List<ProductOption> optionItems = deserialize(data, tagsTypeReference);
+                List<ProductOption> optionItems = deserialize(data, productOptionsTypeReference);
                 return new HashSet<>(optionItems);
             }
         }

@@ -38,6 +38,7 @@ public class ProductRecordUnMapper extends JooqJsonHandler implements RecordUnma
         record.setAvailable(source.available() ? 1 : 0);
         record.setHtmlDescription(source.htmlDescription());
         record.setTags(parseJSON(source.tags()));
+//        record
 
         record.setCreatedAt(Instant.now().toString());
         record.setUpdatedAt(Instant.now().toString());

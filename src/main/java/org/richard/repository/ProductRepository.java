@@ -11,15 +11,17 @@ import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
+import org.jooq.JSON;
+import org.jooq.Record17;
 import org.jooq.Record8;
 import org.jooq.RecordMapper;
-import org.jooq.Records;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import org.microshopify.jooq.tables.records.ProductRecord;
 import org.richard.infra.jooq.ImageRecordUnMapper;
 import org.richard.infra.jooq.ProductRecordMapper;
 import org.richard.infra.jooq.ProductRecordUnMapper;
+import org.richard.infra.jooq.VariantColumnRecordMapper;
 import org.richard.infra.jooq.VariantRecordUnMapper;
 import org.richard.product.Image;
 import org.richard.product.ImageSize;
@@ -37,6 +39,7 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
     private final ProductRecordMapper productRecordMapper;
     private final ImageRecordUnMapper imageRecordUnMapper;
     private final VariantRecordUnMapper variantRecordUnMapper;
+    private final VariantColumnRecordMapper variantColumnRecordMapper;
 
     public ProductRepository(DSLContext dsl, ObjectMapper objectMapper) {
         super(dsl, objectMapper);
@@ -44,6 +47,7 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
         this.productRecordMapper = new ProductRecordMapper(objectMapper);
         this.imageRecordUnMapper = new ImageRecordUnMapper();
         this.variantRecordUnMapper = new VariantRecordUnMapper(objectMapper);
+        this.variantColumnRecordMapper = new VariantColumnRecordMapper(objectMapper);
     }
 
     @Override
@@ -280,11 +284,7 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
                             .on(VARIANT.PRODUCT_ID.eq(PRODUCT.ID))
                             .where(VARIANT.PRODUCT_ID.eq(PRODUCT.ID))
                     ).as("variants")
-                    .convertFrom(r -> r.map(rec -> Variant
-                        .builder()
-                        .id(safeInt(rec.value1()))
-                        .title(rec.value2())
-                        .build()))
+                    .convertFrom(r -> r.map(variantColumnRecordMapper))
             )
             .from(PRODUCT)
             .where(PRODUCT.ID.eq(id))
