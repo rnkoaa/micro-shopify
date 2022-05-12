@@ -20,6 +20,7 @@ public class DatabaseConfig {
     public DataSource dataSource(String url) {
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl(url);
+//        ds.setMaximumPoolSize(1);
         return ds;
     }
 
@@ -40,6 +41,7 @@ public class DatabaseConfig {
         config.setLockingMode(LockingMode.NORMAL);
         config.setTransactionMode(TransactionMode.IMMEDIATE);
         config.setSynchronous(SynchronousMode.NORMAL);
+
 
 // If read-only, then use the existing journal, if any
 //        if ( ! readOnly )

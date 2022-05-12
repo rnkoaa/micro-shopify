@@ -1,10 +1,8 @@
 package org.richard.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Instant;
 import org.jooq.DSLContext;
 import org.richard.infra.jooq.JooqJsonHandler;
-import org.richard.utils.Strings;
 
 public abstract class JooqBaseRepository extends JooqJsonHandler {
 
@@ -25,18 +23,4 @@ public abstract class JooqBaseRepository extends JooqJsonHandler {
         return objectMapper;
     }
 
-    public boolean mapToBoolean(Integer value) {
-        return value != null && value > 0;
-    }
-
-    public Instant mapToInstant(String value) {
-        if (Strings.isNullOrEmpty(value)) {
-            return Instant.now();
-        }
-        return Instant.parse(value);
-    }
-
-    public int safeInt(Integer value){
-        return value == null || value <= 0 ? 0 : value;
-    }
 }

@@ -20,7 +20,6 @@ class ProductMergeTest {
     final ProductItemResponseConverter productResponseMapper = new ProductItemResponseConverter();
     final ProductResponseMapper summaryResponseMapper = new ProductResponseMapper();
 
-
     @Test
     void mergeTwoProducts() throws IOException {
         ProductResponse productResponse = objectMapper.readValue(
@@ -64,7 +63,7 @@ class ProductMergeTest {
             .hasType("Bottoms")
             .hasVariantSize(8)
             .hasImagesSize(7)
-            .hasOptionsSize(7);
+            .hasOptionsSize(1);
 
         assertThat(finalProduct.htmlDescription()).isNotEmpty();
     }

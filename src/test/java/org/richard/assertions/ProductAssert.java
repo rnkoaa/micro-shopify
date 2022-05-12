@@ -122,7 +122,7 @@ public class ProductAssert extends AbstractAssert<ProductAssert, Product> {
 
         if (actual.options().size() != size) {
             failWithMessage("Expected product to have options with size %d but was %d", size,
-                actual.images().size());
+                actual.options().size());
         }
         return this;
     }

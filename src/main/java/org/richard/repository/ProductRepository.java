@@ -12,22 +12,20 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.JSON;
-import org.jooq.Record17;
-import org.jooq.Record8;
-import org.jooq.RecordMapper;
+import org.jooq.Record16;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
+import org.microshopify.jooq.tables.records.ImageRecord;
 import org.microshopify.jooq.tables.records.ProductRecord;
+import org.microshopify.jooq.tables.records.VariantRecord;
 import org.richard.infra.jooq.ImageRecordUnMapper;
 import org.richard.infra.jooq.ProductRecordMapper;
 import org.richard.infra.jooq.ProductRecordUnMapper;
 import org.richard.infra.jooq.VariantColumnRecordMapper;
 import org.richard.infra.jooq.VariantRecordUnMapper;
 import org.richard.product.Image;
-import org.richard.product.ImageSize;
 import org.richard.product.Product;
 import org.richard.product.Variant;
-import org.richard.utils.Strings;
 
 public class ProductRepository extends JooqBaseRepository implements Repository<Product, Integer>,
     HasHandle<Product> {
@@ -52,62 +50,46 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
 
     @Override
     public Optional<Product> findByHandle(String handle) {
-        Product product = getDsl().selectFrom(PRODUCT)
+        Product product = ProductQueries.selectProductWithImageAndVariants(getDsl(), variantColumnRecordMapper)
             .where(PRODUCT.HANDLE.eq(handle))
-            .fetchOneInto(Product.class);
+            .fetchOne(this::mapResultsToProduct);
         return Optional.ofNullable(product);
     }
 
     @Override
-    // https://stackoverflow.com/questions/66742834/update-a-column-when-value-is-not-null-jooq
 //    https://blog.jooq.org/how-to-use-jooqs-updatablerecord-for-crud-to-apply-a-delta/
     public boolean update(Product value) {
-        getDsl().transactionResult(trx -> {
+        if (value.id() <= 0) {
+            return false;
+        }
+
+        return getDsl().transactionResult(trx -> {
             DSLContext dsl = trx.dsl();
-            ProductRecord productRecord = dsl.selectFrom(PRODUCT)
-                .where(PRODUCT.HANDLE.eq(value.link()))
-                .fetchOne();
-            if (productRecord == null) {
-                return false;
-            }
-            productRecord.setUpdatedAt(Instant.now().toString());
-            productRecord.setTags(parseJSON(value.tags()));
-            productRecord.setTitle(value.title());
-            productRecord.setAvailable((value.available()) ? 1 : 0);
-            if (Strings.isNotNullOrEmpty(value.price())) {
-                productRecord.setPrice(value.price());
-            }
-            if (Strings.isNotNullOrEmpty(value.htmlDescription())) {
-                productRecord.setHtmlDescription(value.htmlDescription());
-            }
-            if (value.swatchColor() != null) {
-                productRecord.setSwatchColor(parseJSON(value.swatchColor()));
-            }
-            if (Strings.isNotNullOrEmpty(value.vendor())) {
-                productRecord.setVendor(value.vendor());
+            ProductRecord productRecord = productRecordUnMapper.unmap(value);
+
+            try {
+                if (value.images() != null) {
+                    value.images()
+                        .forEach(image -> this.saveImage(dsl, value, image));
+                }
+
+                if (value.variants() != null) {
+                    value.variants()
+                        .forEach(variant -> this.saveVariant(dsl, value, variant));
+                }
+
+                productRecord.setUpdatedAt(Instant.now().toString());
+                return dsl.update(PRODUCT)
+                    .set(productRecord)
+                    .where(PRODUCT.ID.eq(value.id()))
+                    .execute() > 0;
+            } catch (DataAccessException ex) {
+                System.out.println(ex.getMessage());
             }
 
-            return true;
+            return false;
         });
-        return false;
     }
-    /*
-      return dsl.select(
-                PRODUCT.ID,
-                PRODUCT.NAME,
-                PRODUCT.DESCRIPTION,
-                PRODUCT.PRICE,
-                DSL.multiset(
-                        dsl.select(CATEGORY.ID, CATEGORY.NAME)
-                            .from(CATEGORY)
-                            .join(PRODUCT_CATEGORY)
-                            .on(PRODUCT_CATEGORY.CATEGORY_ID.eq(CATEGORY.ID))
-                            .where(PRODUCT_CATEGORY.PRODUCT_ID.eq(PRODUCT.ID))
-                    ).as("categories")
-                    .convertFrom(r -> r.map(rec -> new Category(rec.value1(), rec.value2())))
-            )
-            .from(PRODUCT);
-     */
 
     @Override
     public Product save(Product product) {
@@ -138,6 +120,9 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
     }
 
     private Variant saveVariant(DSLContext dsl, Product product, Variant variant) {
+        if (variant.id() > 0) {
+            return updateVariant(dsl, product, variant);
+        }
         var toSave = variant.withProduct(product);
         try {
             if (variant.image() != null) {
@@ -162,7 +147,31 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
         return toSave;
     }
 
+    private Variant updateVariant(DSLContext dsl, Product product, Variant variant) {
+        // TODO - use exists
+        VariantRecord variantRecord = dsl.selectFrom(VARIANT)
+            .where(VARIANT.ID.eq(variant.id()))
+            .fetchOne();
+        if (variantRecord == null) {
+            return variant;
+        }
+
+        VariantRecord vRecord = variantRecordUnMapper.unmap(variant.withProduct(product));
+        vRecord.setUpdatedAt(Instant.now().toString());
+        int updatedRecords = dsl.update(VARIANT)
+            .set(vRecord)
+            .where(VARIANT.ID.eq(variant.id()))
+            .execute();
+        if (updatedRecords > 0) {
+            return variant;
+        }
+        return null;
+    }
+
     private Image saveImage(DSLContext dsl, Product product, Image image) {
+        if (image.id() > 0) {
+            return updateImage(dsl, image);
+        }
         var toSave = image.withProduct(product);
         try {
             var result = dsl
@@ -183,6 +192,21 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
             }
         }
         return toSave;
+    }
+
+    private Image updateImage(DSLContext dsl, Image image) {
+        ImageRecord fetchedImage = dsl.selectFrom(IMAGE)
+            .where(IMAGE.ID.eq(image.id()))
+            .fetchOne();
+        if (fetchedImage == null) {
+            return image;
+        }
+
+        fetchedImage.from(image);
+        if (fetchedImage.update() > 0) {
+            return image;
+        }
+        return null;
     }
 
     @Override
@@ -222,14 +246,15 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
 
     @Override
     public List<Product> findAll() {
-        return getDsl()
-            .selectFrom(PRODUCT)
-            .fetchInto(Product.class);
+        return ProductQueries.selectProductWithImageAndVariants(getDsl(), variantColumnRecordMapper)
+            .fetch(this::mapResultsToProduct);
     }
 
     @Override
     public Optional<Product> findById(Integer id) {
-        Product product = getDsl().select(
+//        Product product = ProductQueries.selectProductWithImageAndVariants(getDsl(), variantColumnRecordMapper)
+        Product product = getDsl()
+            .select(
                 PRODUCT.ID,
                 PRODUCT.TITLE,
                 PRODUCT.HANDLE,
@@ -258,7 +283,7 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
                             .on(IMAGE.PRODUCT_ID.eq(PRODUCT.ID))
                             .where(IMAGE.PRODUCT_ID.eq(PRODUCT.ID))
                     ).as("images")
-                    .convertFrom(r -> r.map(mapImageRecord())),
+                    .convertFrom(r -> r.map(ProductQueries.mapImageRecord())),
                 DSL.multiset(
                         getDsl().select(
                                 VARIANT.ID,
@@ -288,36 +313,29 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
             )
             .from(PRODUCT)
             .where(PRODUCT.ID.eq(id))
-            .fetchOne(f -> Product.builder()
-                .id(f.value1())
-                .title(f.value2())
-                .link(f.value3())
-                .type(f.value4())
-                .price(f.value5())
-                .tags(deserialize(f.value6().data(), new TypeReference<>() {}))
-                .vendor(f.value7())
-                .coverImage(productRecordMapper.extractCoverImage(f.value8()))
-                .htmlDescription(f.value9())
-                .available(productRecordMapper.mapToBoolean(f.value10()))
-                .swatchColor(productRecordMapper.extractSwatchColor(f.value11()))
-                .createdAt(productRecordMapper.mapToInstant(f.value12()))
-                .updatedAt(productRecordMapper.mapToInstant(f.value13()))
-                .options(productRecordMapper.extractOptions(f.value14()))
-                .images(f.value15())
-                .variants(f.value16())
-                .build());
+            .fetchOne(this::mapResultsToProduct);
         return Optional.ofNullable(product);
     }
 
-    @NotNull
-    private RecordMapper<Record8<Integer, String, Integer, String, Integer, Integer, String, String>, Image> mapImageRecord() {
-        return rec -> Image.builder().id(safeInt(rec.value1()))
-            .position(safeInt(rec.value3()))
-            .src(rec.value2())
-            .alt(rec.value4())
-            .imageSize(createImageSize(rec.value5(), rec.value6()))
-            .createdAt(mapToInstant(rec.value7()))
-            .updatedAt(mapToInstant(rec.value8()))
+    private Product mapResultsToProduct(
+        Record16<Integer, String, String, String, String, JSON, String, JSON, String, Integer, JSON, String, String, JSON, List<Image>, List<Variant>> f) {
+        return Product.builder()
+            .id(f.value1())
+            .title(f.value2())
+            .link(f.value3())
+            .type(f.value4())
+            .price(f.value5())
+            .tags(deserialize(f.value6().data(), new TypeReference<>() {}))
+            .vendor(f.value7())
+            .coverImage(productRecordMapper.extractCoverImage(f.value8()))
+            .htmlDescription(f.value9())
+            .available(productRecordMapper.mapToBoolean(f.value10()))
+            .swatchColor(productRecordMapper.extractSwatchColor(f.value11()))
+            .createdAt(productRecordMapper.mapToInstant(f.value12()))
+            .updatedAt(productRecordMapper.mapToInstant(f.value13()))
+            .options(productRecordMapper.extractOptions(f.value14()))
+            .images(f.value15())
+            .variants(f.value16())
             .build();
     }
 
@@ -385,7 +403,4 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
         return false;
     }
 
-    private ImageSize createImageSize(Integer width, Integer height) {
-        return new ImageSize(safeInt(width), safeInt(height));
-    }
 }
