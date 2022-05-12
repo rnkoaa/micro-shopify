@@ -14,7 +14,6 @@ import org.jooq.DSLContext;
 import org.jooq.JSON;
 import org.jooq.Record16;
 import org.jooq.exception.DataAccessException;
-import org.jooq.impl.DSL;
 import org.microshopify.jooq.tables.records.ImageRecord;
 import org.microshopify.jooq.tables.records.ProductRecord;
 import org.microshopify.jooq.tables.records.VariantRecord;
@@ -252,66 +251,7 @@ public class ProductRepository extends JooqBaseRepository implements Repository<
 
     @Override
     public Optional<Product> findById(Integer id) {
-//        Product product = ProductQueries.selectProductWithImageAndVariants(getDsl(), variantColumnRecordMapper)
-        Product product = getDsl()
-            .select(
-                PRODUCT.ID,
-                PRODUCT.TITLE,
-                PRODUCT.HANDLE,
-                PRODUCT.PRODUCT_TYPE,
-                PRODUCT.PRICE,
-                PRODUCT.TAGS,
-                PRODUCT.VENDOR,
-                PRODUCT.FEATURED_IMAGE,
-                PRODUCT.HTML_DESCRIPTION,
-                PRODUCT.AVAILABLE,
-                PRODUCT.SWATCH_COLOR,
-                PRODUCT.CREATED_AT,
-                PRODUCT.UPDATED_AT,
-                PRODUCT.OPTIONS,
-                DSL.multiset(
-                        getDsl().select(IMAGE.ID,
-                                IMAGE.SRC,
-                                IMAGE.POSITION,
-                                IMAGE.ALT,
-                                IMAGE.WIDTH, IMAGE.HEIGHT,
-                                IMAGE.CREATED_AT,
-                                IMAGE.UPDATED_AT
-                            )
-                            .from(IMAGE)
-                            .join(PRODUCT)
-                            .on(IMAGE.PRODUCT_ID.eq(PRODUCT.ID))
-                            .where(IMAGE.PRODUCT_ID.eq(PRODUCT.ID))
-                    ).as("images")
-                    .convertFrom(r -> r.map(ProductQueries.mapImageRecord())),
-                DSL.multiset(
-                        getDsl().select(
-                                VARIANT.ID,
-                                VARIANT.TITLE,
-                                VARIANT.PRICE,
-                                VARIANT.COMPARE_AT_PRICE,
-                                VARIANT.POSITION,
-                                VARIANT.SKU,
-                                VARIANT.HANDLE,
-                                VARIANT.INVENTORY,
-                                VARIANT.AVAILABLE,
-                                VARIANT.TAX_CODE,
-                                VARIANT.TAXABLE,
-                                VARIANT.BARCODE,
-                                VARIANT.WEIGHT,
-                                VARIANT.FULFILLMENT_SERVICE,
-                                VARIANT.REQUIRES_SHIPPING,
-                                VARIANT.CREATED_AT,
-                                VARIANT.UPDATED_AT
-                            )
-                            .from(VARIANT)
-                            .join(PRODUCT)
-                            .on(VARIANT.PRODUCT_ID.eq(PRODUCT.ID))
-                            .where(VARIANT.PRODUCT_ID.eq(PRODUCT.ID))
-                    ).as("variants")
-                    .convertFrom(r -> r.map(variantColumnRecordMapper))
-            )
-            .from(PRODUCT)
+        Product product = ProductQueries.selectProductWithImageAndVariants(getDsl(), variantColumnRecordMapper)
             .where(PRODUCT.ID.eq(id))
             .fetchOne(this::mapResultsToProduct);
         return Optional.ofNullable(product);
