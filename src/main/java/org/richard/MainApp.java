@@ -22,11 +22,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.jooq.DSLContext;
+import org.richard.config.DatabaseConfig;
 import org.richard.config.HttpClientFactory;
+import org.richard.frankoak.ImageFileDownload;
 import org.richard.frankoak.ProductDetailDownloader;
+import org.richard.frankoak.converter.ProductItemResponseConverter;
+import org.richard.frankoak.fs.CategoryMenuParser;
 import org.richard.frankoak.product.ImageItem;
 import org.richard.frankoak.product.ProductDetailResponse;
 import org.richard.frankoak.product.ProductItemResponse;
+import org.richard.product.Category;
+import org.richard.product.Product;
 
 public class MainApp {
 
@@ -35,6 +42,63 @@ public class MainApp {
     static ObjectMapper objectMapper = buildObjectMapper();
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        String dbUrl = "jdbc:sqlite:src/main/resources/db/micro-shopify.db";
+        DSLContext dslContext = new DatabaseConfig().dslContext(dbUrl);
+//        final CollectionCategoryMapper collectionCategoryMapper = new CollectionCategoryMapper();
+        final ProductItemResponseConverter productItemResponseConverter = new ProductItemResponseConverter();
+//        final ProductResponseMapper productResponseMapper = new ProductResponseMapper();
+//
+//        final CategoryRepository categoryRepository = new CategoryRepository(dslContext, objectMapper);
+//        final ProductRepository productRepository = new ProductRepository(dslContext, objectMapper);
+//
+//        final CategoryProductRepository categoryProductRepository = new CategoryProductRepository(dslContext,
+//            productRepository, categoryRepository);
+//
+//        Set<Category> categories = CategoryMenuParser.parseMenu();
+//
+//        categoryRepository.saveTree(categories);
+//
+//        Set<CollectionResponse> collectionResponses = CategoryMenuParser.readCategoryFiles(objectMapper);
+//        List<Category> savedCategories = collectionResponses.stream()
+//            .map(c -> {
+//                Category category = collectionCategoryMapper.convert(c.collection());
+//                List<Product> products = c.products().stream()
+//                    .map(productResponseMapper::convert)
+//                    .toList();
+//                return categoryProductRepository.save(category, products);
+//            })
+//            .toList();
+
+        Set<Product> productDetails = readProducts()
+            .stream()
+            .map(productItemResponseConverter::convert)
+            .collect(Collectors.toSet());
+
+        System.out.println(productDetails.size());
+
+//        String categoryPaths = "category-pages";
+//        File file = new File(categoryPaths);
+//        File[] files = file.listFiles();
+//        if (files != null && files.length > 0) {
+//            System.out.printf("Found %d Products\n ", files.length);
+//            Set<Product> products = Arrays.stream(files)
+//                .filter(f -> f.getName().endsWith(".html"))
+//                .flatMap(f -> {
+//                    System.out.printf("Processing File %s\n", f.getPath());
+//                    try {
+//                        return CategoryPageParser.parseShopAllData(f.getPath()).stream();
+//                    } catch (IOException e) {
+//                        System.out.println("unable to read file");
+//                    }
+//                    return Stream.empty();
+//                })
+//                .collect(Collectors.toSet());
+//
+//            System.out.println("Read " + products.size() + " " + products);
+//        }
+    }
+
+    static void downloadImages() {
         Set<ProductItemResponse> productItemResponses = readProducts();
 
         Set<ProductImageInfo> productImageUrls = productItemResponses.stream()
@@ -57,38 +121,6 @@ public class MainApp {
         for (ProductImageInfo productImageUrl : productImageUrls) {
             imageFileDownload.download(productImageUrl);
         }
-
-//        for (ProductItemResponse productItemResponse : productItemResponses) {
-////            System.out.println(productItemResponse);
-//        }
-
-//        Set<Category> categories = parseMenu();
-//        List<Category> seedCategories = new ArrayList<>();
-//        flatten(seedCategories, null, categories);
-//
-//        seedCategories.sort(Comparator.comparing(Category::name));
-//
-
-//        String categoryPaths = "category-pages";
-//        File file = new File(categoryPaths);
-//        File[] files = file.listFiles();
-//        if (files != null && files.length > 0) {
-//            System.out.printf("Found %d Products\n ", files.length);
-//            Set<Product> products = Arrays.stream(files)
-//                .filter(f -> f.getName().endsWith(".html"))
-//                .flatMap(f -> {
-//                    System.out.printf("Processing File %s\n", f.getPath());
-//                    try {
-//                        return CategoryPageParser.parseShopAllData(f.getPath()).stream();
-//                    } catch (IOException e) {
-//                        System.out.println("unable to read file");
-//                    }
-//                    return Stream.empty();
-//                })
-//                .collect(Collectors.toSet());
-//
-//            System.out.println("Read " + products.size() + " " + products);
-//        }
     }
 
     public static void downloadProductDetails() {
@@ -132,7 +164,6 @@ public class MainApp {
     }
 
     private void getCategories(HttpClient httpClient, List<Category> categories) {
-        System.out.println(categories.size());
         IntStream.range(0, categories.size())
             .mapToObj(index -> categories.get(index).withId(index))
             .filter(p -> p.url() != null && !p.url().isEmpty())

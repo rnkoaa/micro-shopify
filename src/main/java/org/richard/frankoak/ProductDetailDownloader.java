@@ -39,7 +39,6 @@ public class ProductDetailDownloader {
                     String response = getPage(httpClient, productInfo.fullUrl);
                     return productInfo.withContent(response);
                 } catch (IOException | InterruptedException e) {
-//                    throw new RuntimeException(e);
                     return productInfo;
                 }
             })
@@ -47,7 +46,6 @@ public class ProductDetailDownloader {
                 try {
                     writeToFile(productInfo);
                 } catch (IOException e) {
-//                    throw new RuntimeException(e);
                     System.out.printf("error writing %s to file, message: [%s]\n", productInfo.handle, e.getMessage());
                 }
             })

@@ -24,10 +24,8 @@ create TABLE IF NOT EXISTS product (
   vendor TEXT,
   product_type TEXT,
   featured_image JSON,
-  swatch_color TEXT,
-  swatch_color_name TEXT,
+  swatch_color JSON,
   price TEXT,
-  option_names JSON,
   options JSON,
   handle TEXT NOT NULL UNIQUE,
   updated_at TEXT NOT NULL,
@@ -62,28 +60,20 @@ CREATE TABLE IF NOT EXISTS variant (
     updated_at TEXT NOT NULL,
     created_at TEXT NOT NULL,
     published_at TEXT,
-    taxable TINYINT,
-    barcode JSON,
+    taxable INTEGER,
+    barcode TEXT,
     grams INTEGER,
     image_id INTEGER,
-    weight TEXT,
-    weight_unit TEXT,
+    weight JSON,
+--    weight_unit TEXT,
     tax_code TEXT,
     requires_shipping INTEGER,
+    available INTEGER,
+    inventory JSON,
+    UNIQUE(product_id, title),
     FOREIGN KEY (product_id) REFERENCES product (id)
       ON DELETE CASCADE ON UPDATE NO ACTION
 );
-
-CREATE TABLE IF NOT EXISTS product_inventory (
-    id INTEGER NOT NULL PRIMARY KEY,
-    product_id INTEGER NOT NULL,
-    quantity INTEGER,
-    updated_at TEXT NOT NULL,
-    created_at TEXT NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product (id)
-      ON DELETE CASCADE ON UPDATE NO ACTION
-);
-
 
 CREATE TABLE IF NOT EXISTS image (
     id INTEGER NOT NULL PRIMARY KEY,
@@ -94,7 +84,7 @@ CREATE TABLE IF NOT EXISTS image (
     alt TEXT,
     width INTEGER,
     height INTEGER,
-    src TEXT,
+    src TEXT unique,
     variant_ids TEXT,
     FOREIGN KEY (product_id) REFERENCES product (id)
       ON DELETE CASCADE ON UPDATE NO ACTION
